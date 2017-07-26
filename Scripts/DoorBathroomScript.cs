@@ -9,12 +9,9 @@ public class DoorBathroomScript : MonoBehaviour {
     public Camera fpsCam;
 
     public bool inTrigger;
-
     public string OpenText = "Insert KeyCard to Open door";
     public string CloseText = "";
-
     private bool _isOpen = false;
-
     public static bool keyCard_To_Bathroom;
 
 

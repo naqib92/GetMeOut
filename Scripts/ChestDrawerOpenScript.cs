@@ -14,9 +14,7 @@ public class ChestDrawerOpenScript : MonoBehaviour
     private bool _isInsideTrigger = false;
     public string OpenText = "open drawer";
     public string CloseText = "";
-
     private bool _isOpen = false;
-
     private float time;//timer for letting paper appear after 0.7 sec after drawer has been opened
 
 
