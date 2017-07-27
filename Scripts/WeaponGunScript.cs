@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
+using UnityEngine.UI;
 
 //get rid of this error if occurs: UnityEditor.AsyncHTTPClient:Done(State, Int32)
 //Edit -> Preferences -> Show Asset Store Search Hits -> disable checkbox
@@ -7,33 +9,55 @@ public class WeaponGunScript : MonoBehaviour {
 
     public float damage = 10f; // damage inflicted to the enemy
     public float range = 100f; // distance that can be fired to
-    public float impactForce = 30f; 
+    public float impactForce = 30f;
+
+    public float maxAmmo = 100f;
+    public float currentAmmo;
+    public float declineAmmo = 20f;
+    public float reloadTime = 3f;
+    private bool isReloading = false;
+
 
     public Camera fpsCam;// used to shoot a Raycast from the camera
     public ParticleSystem muzzleFlash;//particle effect Afterburner
     public GameObject impactEffect;//enemy has to have a rigid body// impact effect(particle effect Shockwave) after enemy is hit with a raycast 
+    private WeaponGunAmmoStatus wGAS;
+    public Image bar;
 
-
-	// Use this for initialization
-	void Start () {
-
-	}
+    // Use this for initialization
+    void Start ()
+    {
+        //wGAS = GetComponent<WeaponGunAmmoStatus>();
+        currentAmmo = maxAmmo;
+    }
 
 
     // Update is called once per frame
     void Update()
     {
+        ammoBar();
 
+        if (isReloading)
+            return;
+
+        if (currentAmmo <= 0)
+        {
+            StartCoroutine(Reload());
+            return;
+        }
 
         if (Input.GetButtonDown("Fire1"))
         {
             shoot();
+            //lowerAmmo();
         }
     }
 
 
     void shoot()
     {
+        currentAmmo -= declineAmmo;
+
         muzzleFlash.Play();
         RaycastHit hit; //store information about what we hit with out ray
 
@@ -45,9 +69,9 @@ public class WeaponGunScript : MonoBehaviour {
         if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, range))
         {
             //show the name of the object that has been hit in the console
-            Debug.Log(hit.transform.name);
+           // Debug.Log(hit.transform.name);
 
-            // subtract amount from the enemy healt
+            // subtract amount from the enemys health
             EnemyScipt enemy = hit.transform.GetComponent<EnemyScipt>();
             if(enemy != null)
             {
@@ -74,4 +98,25 @@ public class WeaponGunScript : MonoBehaviour {
         } 
     }
 
+    IEnumerator Reload()
+    {
+        isReloading = true;
+        yield return new WaitForSeconds(reloadTime);
+        currentAmmo = maxAmmo;
+        isReloading = false;
+    }
+
+
+
+    //Image bar
+    public void ammoBar()
+    {
+        bar.fillAmount = currentAmmo / maxAmmo; // procent value from 0 - 1. example -  60/100 = 0,6% on the bar      
+    }
+    /**
+        void lowerAmmo()
+        {
+            wGAS.LowerAmmo(declineAmmo);
+        }
+    **/
 }
