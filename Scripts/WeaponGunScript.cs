@@ -14,10 +14,6 @@ public class WeaponGunScript : MonoBehaviour {
     public GameObject impactEffect;//enemy has to have a rigid body// impact effect(particle effect Shockwave) after enemy is hit with a raycast 
 
 
-
-
-
-
 	// Use this for initialization
 	void Start () {
 
