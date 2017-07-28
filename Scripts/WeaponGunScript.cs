@@ -17,40 +17,70 @@ public class WeaponGunScript : MonoBehaviour {
     public float reloadTime = 3f;
     private bool isReloading = false;
 
+    public Text ammoText;
+    public Text reloadingText;//reloading text
 
+    private Animator _animator;
     public Camera fpsCam;// used to shoot a Raycast from the camera
     public ParticleSystem muzzleFlash;//particle effect Afterburner
     public GameObject impactEffect;//enemy has to have a rigid body// impact effect(particle effect Shockwave) after enemy is hit with a raycast 
     private WeaponGunAmmoStatus wGAS;
     public Image bar;
+    
 
     // Use this for initialization
     void Start ()
     {
         //wGAS = GetComponent<WeaponGunAmmoStatus>();
+        _animator = GetComponent<Animator>();
         currentAmmo = maxAmmo;
+        ammoText.text = "Ammo: " + maxAmmo.ToString();
+        reloadingText.enabled = false;
     }
 
 
     // Update is called once per frame
     void Update()
     {
+        
         ammoBar();
+        ammoText.text = "Ammo: " + currentAmmo.ToString();
 
+        // if is reloading then stop other actions
         if (isReloading)
             return;
-
+        //if ammo is zero or below then stop other actions and reload
         if (currentAmmo <= 0)
         {
+            
             StartCoroutine(Reload());
             return;
         }
 
         if (Input.GetButtonDown("Fire1"))
         {
+
             shoot();
+            _animator.Play("WeaponGun_moveBack", -1, 0f);
             //lowerAmmo();
         }
+    }
+
+    IEnumerator Reload()
+    {
+
+        isReloading = true; //set isReloading to true so other actions are stopped
+        ammoText.enabled = false;//disable the ammotext so the reloading text can be seen
+        reloadingText.enabled = true; // show reloading text
+       
+
+        yield return new WaitForSeconds(reloadTime);
+        currentAmmo = maxAmmo;// fill ammo
+
+        
+        reloadingText.enabled = false;// disable reloading text
+        ammoText.enabled = true;// enable the ammotext
+        isReloading = false;//set isReloading to false so other actions can be done
     }
 
 
@@ -98,13 +128,7 @@ public class WeaponGunScript : MonoBehaviour {
         } 
     }
 
-    IEnumerator Reload()
-    {
-        isReloading = true;
-        yield return new WaitForSeconds(reloadTime);
-        currentAmmo = maxAmmo;
-        isReloading = false;
-    }
+
 
 
 
