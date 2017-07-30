@@ -7,13 +7,13 @@ using UnityEngine.UI;
 
 public class WeaponGunScript : MonoBehaviour {
 
-    public float damage = 10f; // damage inflicted to the enemy
+    public float damage = 1f; // damage inflicted to the enemy
     public float range = 100f; // distance that can be fired to
     public float impactForce = 30f;
 
-    public float maxAmmo = 100f;
+    public float maxAmmo = 10f;
     public float currentAmmo;
-    public float declineAmmo = 20f;
+    public float declineAmmo = 1f;
     public float reloadTime = 3f;
     private bool isReloading = false;
 

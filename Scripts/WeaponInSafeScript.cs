@@ -3,8 +3,7 @@ using System.Collections;
 
 public class WeaponInSafeScript : MonoBehaviour {
 
-    public Animator _animator;
-    
+    public Animator _animator;   
     public GameObject OpenPanel = null;
     public GameObject OutsideDoorIsOpened_Panel;
     public GameObject Weapon;
@@ -20,7 +19,6 @@ public class WeaponInSafeScript : MonoBehaviour {
     void Start()
     {
         _animator = GetComponent<Animator>();
-
     }
 
 

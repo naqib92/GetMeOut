@@ -21,7 +21,7 @@ public class DoorOutsideScript : MonoBehaviour {
     }
 
 
-
+    // for checking if the outside door panel is activ
     private bool IsOpenPanelActive
     {
         get
@@ -30,7 +30,7 @@ public class DoorOutsideScript : MonoBehaviour {
         }
     }
 
-
+    // for updating the outside door panel text
     private void UpdatePanelText()
     {
         UnityEngine.UI.Text panelText = OpenPanel.transform.FindChild("Text").GetComponent<UnityEngine.UI.Text>();
@@ -43,6 +43,8 @@ public class DoorOutsideScript : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
+
+        // if raycast hits the outside door collider, set _isInsideTrigger to true else set to false
         RaycastHit hit;
         if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, 2))
         {
@@ -56,7 +58,7 @@ public class DoorOutsideScript : MonoBehaviour {
                             {
                                 inTrigger = true;
                                 UpdatePanelText();
-                                OpenPanel.SetActive(true);// panel can now being seen
+                                OpenPanel.SetActive(true);
                                 _animator.SetBool("OutsideSlot_showError", true);
                             }
             }
@@ -72,21 +74,22 @@ public class DoorOutsideScript : MonoBehaviour {
                             else
                             {
                                 inTrigger = false;
-                                OpenPanel.SetActive(false);// panel is invincible
+                                OpenPanel.SetActive(false);
                                 _animator.SetBool("OutsideSlot_showError", false);
                             }
         }
-
+        //if _isInsideTrigger is true and mouse is pressed open outside door
         if (inTrigger == true)
         {
                 if (Input.GetMouseButtonDown(1))
                 {
                     _animator.SetBool("open_OutsideDoor", false);
-                   // OpenPanel.SetActive(false);// panel is invincible
+                   // OpenPanel.SetActive(false);
                     //OpenPanel = null;
                 }
             
         }
+        //if weapon obtained, open the ouside door and show no slot errors
         if (weaponObtained == true)
         {
             _animator.SetBool("OutsideSlot_showError", true);

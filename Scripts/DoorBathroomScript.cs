@@ -9,9 +9,12 @@ public class DoorBathroomScript : MonoBehaviour {
     public Camera fpsCam;
 
     public bool inTrigger;
+
     public string OpenText = "Insert KeyCard to Open door";
     public string CloseText = "";
+
     private bool _isOpen = false;
+
     public static bool keyCard_To_Bathroom;
 
 
@@ -23,7 +26,7 @@ public class DoorBathroomScript : MonoBehaviour {
 
     }
 
-
+    // for checking if the bathroom door panel is activ
     private bool IsOpenPanelActive
     {
         get
@@ -32,7 +35,7 @@ public class DoorBathroomScript : MonoBehaviour {
         }
     }
 
-
+    // for updating the bathroom door panel text 
     private void UpdatePanelText()
     {
         UnityEngine.UI.Text panelText = OpenPanel.transform.FindChild("Text").GetComponent<UnityEngine.UI.Text>();
@@ -42,8 +45,9 @@ public class DoorBathroomScript : MonoBehaviour {
         }
     }
 
-    // Update is called once per frame
-    void Update()
+
+    // if raycast hits the bathroom door collider, set _isInsideTrigger to true else set to false
+    void _RaycastHit()
     {
         RaycastHit hit;
         if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, 2))
@@ -52,7 +56,7 @@ public class DoorBathroomScript : MonoBehaviour {
             {
                 inTrigger = true;
                 UpdatePanelText();
-                OpenPanel.SetActive(true);// panel can now being seen
+                OpenPanel.SetActive(true);
                 _animator.SetBool("BathroomSlot_showError", true);
             }
 
@@ -61,17 +65,19 @@ public class DoorBathroomScript : MonoBehaviour {
         else
         {
             inTrigger = false;
-            OpenPanel.SetActive(false);// panel is invincible
+            OpenPanel.SetActive(false);
             _animator.SetBool("BathroomSlot_showError", false);
         }
+    }
 
 
-        destroyKeycardMinimalized002 = GameObject.FindGameObjectWithTag("keycard002");
-
+    //if _isInsideTrigger is true and mouse is pressed show no error, open bathroom door and deactivate the bathroom door panel
+    void InsideTrigger()
+    {
         if (inTrigger == true)
         {
             if (keyCard_To_Bathroom)
-           // if (true)
+            // if (true)
             {
                 if (Input.GetMouseButtonDown(1))
                 {
@@ -86,9 +92,24 @@ public class DoorBathroomScript : MonoBehaviour {
             }
 
         }
+    }
+    // destroy the mini panel "keycard obtainded" when door opens
+    void DestroyPanel()
+    {
+        destroyKeycardMinimalized002 = GameObject.FindGameObjectWithTag("keycard002");
+
+
         if (_animator.GetBool("OpenDoorBathroom") == true)
         {
             Destroy(destroyKeycardMinimalized002);
         }
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        _RaycastHit();
+        InsideTrigger();
+        DestroyPanel();
     }
 }

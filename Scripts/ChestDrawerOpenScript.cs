@@ -14,7 +14,9 @@ public class ChestDrawerOpenScript : MonoBehaviour
     private bool _isInsideTrigger = false;
     public string OpenText = "open drawer";
     public string CloseText = "";
+
     private bool _isOpen = false;
+
     private float time;//timer for letting paper appear after 0.7 sec after drawer has been opened
 
 
@@ -54,6 +56,7 @@ public class ChestDrawerOpenScript : MonoBehaviour
         }
     }
 
+    // for checking if the drawer panel is activ
     private bool IsOpenPanelActive
     {
         get
@@ -62,7 +65,7 @@ public class ChestDrawerOpenScript : MonoBehaviour
         }
     }
 
-
+    // for updating the drawer panel text 
     private void UpdatePanelText()
     {
         UnityEngine.UI.Text panelText = Panel_Chestdrawer.transform.FindChild("Text").GetComponent<UnityEngine.UI.Text>();
@@ -76,10 +79,10 @@ public class ChestDrawerOpenScript : MonoBehaviour
     void Update()
     {
 
-            
-        
 
-        // when panel is visible show text 
+
+
+        // if panel is activ and if _isInsideTrigger is true
         if (IsOpenPanelActive && _isInsideTrigger)
         {
             if (Input.GetMouseButtonDown(1))

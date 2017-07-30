@@ -33,7 +33,7 @@ public class DoorKitchenScript : MonoBehaviour {
     }
 
 
-
+    // for checking if the kitchen door panel is activ
     private bool IsOpenPanelActive
     {
         get
@@ -42,7 +42,7 @@ public class DoorKitchenScript : MonoBehaviour {
         }
     }
 
-
+    // for updating the kitchen door panel text
     private void UpdatePanelText()
     {
         UnityEngine.UI.Text panelText = OpenPanel.transform.FindChild("Text").GetComponent<UnityEngine.UI.Text>();
@@ -52,8 +52,9 @@ public class DoorKitchenScript : MonoBehaviour {
         }
     }
 
-    // Update is called once per frame
-    void Update()
+
+    // if raycast hits the kitchen door collider, set _isInsideTrigger to true else set to false
+    void _RaycastHit()
     {
         RaycastHit hit;
         if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, 2))
@@ -71,7 +72,7 @@ public class DoorKitchenScript : MonoBehaviour {
                 }
                 else
                 {
-                    OpenPanel.SetActive(true);// panel can now being seen
+                    OpenPanel.SetActive(true);
 
                 }
             }
@@ -89,38 +90,57 @@ public class DoorKitchenScript : MonoBehaviour {
             }
             else
             {
-                OpenPanel.SetActive(false);// panel is invincible
+                OpenPanel.SetActive(false);
             }
         }
 
-        destroyKeycardMinimalized003 = GameObject.FindGameObjectWithTag("keycard003");
-        destroyKeycardIsActiveMinimalized003 = GameObject.FindGameObjectWithTag("keycardIsActive03");
-
+    }
+    // if _isInsideTrigger is true and mouse is pressed open kitchen door, show no error and deactivate kitchen door panel
+    void InsideTrigger()
+    {
         if (inTrigger == true)
         {
-          
-                if (Input.GetMouseButtonDown(1))
-                {
 
-                    if(keycardIsActiv == true)
-                    {
+            if (Input.GetMouseButtonDown(1))
+            {
+
+                if (keycardIsActiv == true)
+                {
                     _animator.SetBool("openKitchenDoor", true);
                     OpenPanel.SetActive(false);// panel is invincible
                     _animator.SetBool("KitchenSlot_showNoError", true);
                     OpenPanel = null;
                     Laptop_GameScript_2.KeyCard_To_Laptop = false;// dont show the game on the laptop
                 }
-                    
-                }
+
+            }
 
 
-            
+
 
         }
+
+    }
+
+    // destroy the mini panel "keycard obtainded" and "keycard is activ" when door opens
+    void DestroyPanel()
+    {
+        destroyKeycardMinimalized003 = GameObject.FindGameObjectWithTag("keycard003");
+        destroyKeycardIsActiveMinimalized003 = GameObject.FindGameObjectWithTag("keycardIsActive03");
+
+
         if (_animator.GetBool("openKitchenDoor") == true)
         {
             Destroy(destroyKeycardMinimalized003);
             Destroy(destroyKeycardIsActiveMinimalized003);
         }
+    }
+    // Update is called once per frame
+    void Update()
+    {
+        _RaycastHit();
+        InsideTrigger();
+        DestroyPanel();
+
     }
 }

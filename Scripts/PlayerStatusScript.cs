@@ -3,7 +3,6 @@ using System.Collections;
 using UnityEngine.UI;
 
 public class PlayerStatusScript : MonoBehaviour {
-    public Animator _animator;
 
     //Image bar
     public float maxHealth = 100;
@@ -24,8 +23,6 @@ public class PlayerStatusScript : MonoBehaviour {
     // Use this for initialization
     void Start () {
 
-        _animator = GetComponent<Animator>();
-
         //Image bar - full bar at start
         currentHealth = maxHealth;
 
@@ -37,7 +34,7 @@ public class PlayerStatusScript : MonoBehaviour {
 
 
 
-    public IEnumerator onOff_Healthbar()
+    IEnumerator onOff_Healthbar()
     {
         
         bar.enabled = false;
@@ -59,7 +56,7 @@ public class PlayerStatusScript : MonoBehaviour {
         healthBar();
         if (currentHealth <= 0)
         {
-            Debug.Log("Player is dead");
+           // Debug.Log("Player is dead");
         }
     }
 

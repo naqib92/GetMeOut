@@ -14,7 +14,7 @@ public class KeyCardKitchen_To_Weapon : MonoBehaviour {
     public bool inTrigger;
 
 
-
+    // for checking if the key card panel is activ
     private bool IsOpenPanelActive
     {
         get
@@ -23,7 +23,7 @@ public class KeyCardKitchen_To_Weapon : MonoBehaviour {
         }
     }
 
-
+    // for updating the key card panel text
     private void UpdatePanelText()
     {
         UnityEngine.UI.Text panelText = OpenPanel.transform.FindChild("Text").GetComponent<UnityEngine.UI.Text>();
@@ -34,8 +34,9 @@ public class KeyCardKitchen_To_Weapon : MonoBehaviour {
     }
 
 
-    // Update is called once per frame
-    void Update () {
+    // if raycast hits the key card collider, set _isInsideTrigger to true else set to false
+    void _RaycastHit()
+    {
         RaycastHit hit;
         if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, 2))
         {
@@ -54,15 +55,17 @@ public class KeyCardKitchen_To_Weapon : MonoBehaviour {
             inTrigger = false;
         }
 
-
-        // when panel is visible show text 
+    }
+    //if _isInsideTrigger is true and mouse is pressed destroy key card and display "key card obtained" 
+    void InsideTrigger()
+    {
         if (inTrigger)
         {
             if (Input.GetMouseButtonDown(1))
             {
                 //DoorBedroomScript.keyCardBedroom = true;
-                Laptop_GameScript_3.KeyCard_To_Laptop = true;
-                WeaponSafe_CorridorScript.KeyCard_To_Laptop = true;
+                Laptop_GameScript_3.KeyCard_To_Laptop = true;// set to true so player can play the third game
+                WeaponSafe_CorridorScript.KeyCard_To_Laptop = true; // set to true so the weapon safe shows "go do activation to open" 
 
                 Laptop_GameScript_2.putOffPanel_Game2 = true;// in case second game wasnt played then dont show the panel
                 Laptop_GameScript.putOffPanel_Game1 = true;// in case first game wasnt played then dont show the panel
@@ -71,5 +74,13 @@ public class KeyCardKitchen_To_Weapon : MonoBehaviour {
                 shownMinimizedKeycard004.SetActive(true);
             }
         }
+
+    }
+    // Update is called once per frame
+    void Update () {
+        _RaycastHit();
+        InsideTrigger();
+
+
     }
 }

@@ -35,15 +35,10 @@ public class Laptop_GameScript_2 : MonoBehaviour {
     }
 
 
-
-
-
-
-
-    // Update is called once per frame
-    void Update()
+    // if raycast hits the laptop collider, set _isInsideTrigger to true else set to false
+    void _RaycastHit()
     {
-
+     
         RaycastHit hit;
         if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, 2))
         {
@@ -52,12 +47,12 @@ public class Laptop_GameScript_2 : MonoBehaviour {
                 Laptop_isInsideTrigger = true;
                 if (KeyCard_To_Laptop == true)
                 {
-                    Laptop_OpenPanel2.SetActive(true);// panel can now being seen
+                    Laptop_OpenPanel2.SetActive(true);
                     _animator.SetBool("Laptop_on", true);
                 }
                 else if (putOffPanel_Game2 == true)
                 {
-                    Laptop_OpenPanel2.SetActive(false);// panel is invincible
+                    Laptop_OpenPanel2.SetActive(false);
                 }
             }
 
@@ -66,7 +61,7 @@ public class Laptop_GameScript_2 : MonoBehaviour {
         else
         {
             Laptop_isInsideTrigger = false;
-            Laptop_OpenPanel2.SetActive(false);// panel is invincible
+            Laptop_OpenPanel2.SetActive(false);
 
             laptop_myNumber.text = "";
             wrongAnswer.SetActive(false);
@@ -75,126 +70,146 @@ public class Laptop_GameScript_2 : MonoBehaviour {
         }
 
 
+    }
 
 
+    // if player is insideTrigger show panel keyboard
+    void InsideTrigger()
+    {
 
-
-
-
-
-
-
+       
         if (KeyCard_To_Laptop == true)
         {
 
-                                        if (Laptop_isInsideTrigger)
-                                        {
-                                            Laptop_OpenPanel2.SetActive(true);
-                                            if (Input.GetKeyDown(KeyCode.Alpha0) || Input.GetKeyDown(KeyCode.Keypad0))
-                                            {
-                                                keypadInput("0");
-                                                wrongAnswer.SetActive(false);
-                                            }
+            if (Laptop_isInsideTrigger)
+            {
+                Laptop_OpenPanel2.SetActive(true);
+                if (Input.GetKeyDown(KeyCode.Alpha0) || Input.GetKeyDown(KeyCode.Keypad0))
+                {
+                    keypadInput("0");
+                    wrongAnswer.SetActive(false);
+                }
 
-                                            if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Keypad1))
-                                            {
+                if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Keypad1))
+                {
 
-                                                keypadInput("1");
-                                                wrongAnswer.SetActive(false);
-                                            }
+                    keypadInput("1");
+                    wrongAnswer.SetActive(false);
+                }
 
-                                            if (Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.Keypad2))
-                                            {
-                                                keypadInput("2");
-                                                wrongAnswer.SetActive(false);
-                                            }
+                if (Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.Keypad2))
+                {
+                    keypadInput("2");
+                    wrongAnswer.SetActive(false);
+                }
 
-                                            if (Input.GetKeyDown(KeyCode.Alpha3) || Input.GetKeyDown(KeyCode.Keypad3))
-                                            {
-                                                keypadInput("3");
-                                                wrongAnswer.SetActive(false);
-                                            }
+                if (Input.GetKeyDown(KeyCode.Alpha3) || Input.GetKeyDown(KeyCode.Keypad3))
+                {
+                    keypadInput("3");
+                    wrongAnswer.SetActive(false);
+                }
 
-                                            if (Input.GetKeyDown(KeyCode.Alpha4) || Input.GetKeyDown(KeyCode.Keypad4))
-                                            {
-                                                 keypadInput("4");
-                                                 wrongAnswer.SetActive(false);
-                                             }
+                if (Input.GetKeyDown(KeyCode.Alpha4) || Input.GetKeyDown(KeyCode.Keypad4))
+                {
+                    keypadInput("4");
+                    wrongAnswer.SetActive(false);
+                }
 
-                                            if (Input.GetKeyDown(KeyCode.Alpha5) || Input.GetKeyDown(KeyCode.Keypad5))
-                                            {
-                                                keypadInput("5");
-                                                wrongAnswer.SetActive(false);
-                                            }
+                if (Input.GetKeyDown(KeyCode.Alpha5) || Input.GetKeyDown(KeyCode.Keypad5))
+                {
+                    keypadInput("5");
+                    wrongAnswer.SetActive(false);
+                }
 
-                                            if (Input.GetKeyDown(KeyCode.Alpha6) || Input.GetKeyDown(KeyCode.Keypad6))
-                                            {
-                                                keypadInput("6");
-                                                wrongAnswer.SetActive(false);
-                                            }
+                if (Input.GetKeyDown(KeyCode.Alpha6) || Input.GetKeyDown(KeyCode.Keypad6))
+                {
+                    keypadInput("6");
+                    wrongAnswer.SetActive(false);
+                }
 
-                                            if (Input.GetKeyDown(KeyCode.Alpha7) || Input.GetKeyDown(KeyCode.Keypad7))
-                                            {
-                                                keypadInput("7");
-                                                wrongAnswer.SetActive(false);
-                                            }
+                if (Input.GetKeyDown(KeyCode.Alpha7) || Input.GetKeyDown(KeyCode.Keypad7))
+                {
+                    keypadInput("7");
+                    wrongAnswer.SetActive(false);
+                }
 
-                                            if (Input.GetKeyDown(KeyCode.Alpha8) || Input.GetKeyDown(KeyCode.Keypad8))
-                                            {
-                                                keypadInput("8");
-                                                wrongAnswer.SetActive(false);
-                                            }
+                if (Input.GetKeyDown(KeyCode.Alpha8) || Input.GetKeyDown(KeyCode.Keypad8))
+                {
+                    keypadInput("8");
+                    wrongAnswer.SetActive(false);
+                }
 
-                                            if (Input.GetKeyDown(KeyCode.Alpha9) || Input.GetKeyDown(KeyCode.Keypad9))
-                                            {
-                                                keypadInput("9");
-                                                wrongAnswer.SetActive(false);
-                                            }
+                if (Input.GetKeyDown(KeyCode.Alpha9) || Input.GetKeyDown(KeyCode.Keypad9))
+                {
+                    keypadInput("9");
+                    wrongAnswer.SetActive(false);
+                }
 
-                                            if (Input.GetKeyDown(KeyCode.Delete) || Input.GetKeyDown(KeyCode.Backspace))
-                                            {
-                                                laptop_myNumber.text = "";
-                                                wrongAnswer.SetActive(false);
-                                            }
-                                            if (Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Return))
-                                            {
-                                                if (laptop_myNumber.text == currentAnswer)
-                                                {
-                                                    Laptop_OpenPanel2.SetActive(false);
-                                                    Laptop_OpenPanel2 = null;
-                                                    correct = true;
-                                                }
-
-
-                                                else
-                                                {
-                                                    //laptop_myNumber.text = "wrong answer";
-                                                    wrongAnswer.SetActive(true);
-                                                    playerStatus.GetDamage(damage);
-                                                    healthbar_blur.showBlur();
-                                                 }
-                                            }
-                                        }
+                if (Input.GetKeyDown(KeyCode.Delete) || Input.GetKeyDown(KeyCode.Backspace))
+                {
+                    laptop_myNumber.text = "";
+                    wrongAnswer.SetActive(false);
+                }
+                if (Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Return))
+                {
+                    if (laptop_myNumber.text == currentAnswer)
+                    {
+                        Laptop_OpenPanel2.SetActive(false);
+                        Laptop_OpenPanel2 = null;
+                        correct = true;
+                    }
 
 
-                            if (correct && Laptop_isInsideTrigger)
-                            {
-                                Reward_OpenPanel2.SetActive(true);
-                                DoorKitchenScript.keycardIsActiv = true; // key card is now activ for the door to open
-                                DoorKitchenScript.KeyCard_To_Laptop = false;// dont show key needs to be activated since the answer is correct   
-                                _animator.SetBool("Laptop_on", false);
-                                shownMinimizedKeycard003.SetActive(false);//for deactivating panel_keycard04_minimized when answer is correct
-                                keycardIsActive_minimized003.SetActive(true); //to activate panel keycardIsActive_minimized when answer is correct
-                            }
-                            if (correct && Laptop_isInsideTrigger == false)
-                            {
-                                Reward_OpenPanel2.SetActive(false);
-                                shownMinimizedKeycard003.SetActive(false);//for deactivating panel_keycard04_minimized when answer is correct
-                                keycardIsActive_minimized003.SetActive(true); //to activate panel keycardIsActive_minimized when answer is correct
-                             }
+                    else
+                    {
+                        //laptop_myNumber.text = "wrong answer";
+                        wrongAnswer.SetActive(true);
+                        playerStatus.GetDamage(damage);
+                        healthbar_blur.showBlur();
+                    }
+                }
+            }
+
+
+            if (correct && Laptop_isInsideTrigger)
+            {
+                StartCoroutine(ShowSuccess());
+                DoorKitchenScript.keycardIsActiv = true; // key card is now activ for the door to open
+                DoorKitchenScript.KeyCard_To_Laptop = false;// dont show key needs to be activated since the answer is correct   
+                _animator.SetBool("Laptop_on", false);
+                shownMinimizedKeycard003.SetActive(false);//for deactivating panel_keycard04_minimized when answer is correct
+                keycardIsActive_minimized003.SetActive(true); //to activate panel keycardIsActive_minimized when answer is correct
+            }
+            if (correct && Laptop_isInsideTrigger == false)
+            {
+                shownMinimizedKeycard003.SetActive(false);//for deactivating minimized panel keycard03(key card obtained) when answer is correct
+                keycardIsActive_minimized003.SetActive(true); //to activate minimized panel "key card is activ" when answer is correct
+            }
 
         }
 
+    }
+
+
+
+    //show the the panel "key card is activ" for some seconds and then deactivate
+    IEnumerator ShowSuccess()
+    {
+        Reward_OpenPanel2.SetActive(true);
+        yield return new WaitForSeconds(2f);
+        Reward_OpenPanel2.SetActive(false);
+       // shownMinimizedKeycard003.SetActive(false);//for deactivating minimized panel keycard03(key card obtained) when answer is correct
+        //keycardIsActive_minimized003.SetActive(true); //to activate minimized panel "key card is activ" when answer is correct
+    }
+
+
+
+
+    // Update is called once per frame
+    void Update()
+    {
+        _RaycastHit();
+        InsideTrigger();
     }
 
 

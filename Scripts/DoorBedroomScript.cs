@@ -30,7 +30,7 @@ public class DoorBedroomScript : MonoBehaviour
     }
 
 
-
+    // for checking if the bedroom door panel is activ
     private bool IsOpenPanelActive
     {
         get
@@ -39,7 +39,7 @@ public class DoorBedroomScript : MonoBehaviour
         }
     }
 
-
+    // for updating the bedroom door panel text 
     private void UpdatePanelText()
     {
         UnityEngine.UI.Text panelText = OpenPanel.transform.FindChild("Text").GetComponent<UnityEngine.UI.Text>();
@@ -49,35 +49,34 @@ public class DoorBedroomScript : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
+
+    // if raycast hits the bedroom door collider, set _isInsideTrigger to true else set to false
+    void _RaycastHit()
     {
-
-        
-            RaycastHit hit;
-            if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, 2))
+        RaycastHit hit;
+        if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, 2))
+        {
+            if (hit.collider.gameObject.tag == "door_Bedroom" || hit.collider.gameObject.tag == "slot_Bedroom")
             {
-                if (hit.collider.gameObject.tag == "door_Bedroom" || hit.collider.gameObject.tag == "slot_Bedroom")
-                {
-                    _animator.SetBool("BedroomSlot_showError", true);
-                    inTrigger = true;
-                    UpdatePanelText();
-                    OpenPanel.SetActive(true);// panel can now being seen
-                }
-
-
-            }
-            else
-            {
-                _animator.SetBool("BedroomSlot_showError", false);
-                inTrigger = false;
-                OpenPanel.SetActive(false);// panel is invincible
+                _animator.SetBool("BedroomSlot_showError", true);
+                inTrigger = true;
+                UpdatePanelText();
+                OpenPanel.SetActive(true);
             }
 
 
+        }
+        else
+        {
+            _animator.SetBool("BedroomSlot_showError", false);
+            inTrigger = false;
+            OpenPanel.SetActive(false);
+        }
 
-            destroyKeycardMinimalized001 = GameObject.FindGameObjectWithTag("keycard001");
-
+    }
+    //if _isInsideTrigger is true and mouse is pressed open bedroom door, show no error and deactivate the bedroom door panel
+    void InsideTrigger()
+    {
         if (inTrigger == true)
         {
 
@@ -87,7 +86,7 @@ public class DoorBedroomScript : MonoBehaviour
                 {
                     _animator.SetBool("BedroomSlot_showNoError", true);
                     _animator.SetBool("OpenDoorBedroom", true);
-                    OpenPanel.SetActive(false);// panel is invincible
+                    OpenPanel.SetActive(false);
                     OpenPanel = null;
 
                 }
@@ -95,10 +94,27 @@ public class DoorBedroomScript : MonoBehaviour
 
             }
         }
-        
+
+    }
+
+    // destroy the mini panel "keycard obtainded" when doors opens
+    void DestroyPanel()
+    {
+        destroyKeycardMinimalized001 = GameObject.FindGameObjectWithTag("keycard001");
         if (_animator.GetBool("OpenDoorBedroom") == true)
         {
             Destroy(destroyKeycardMinimalized001);
         }
+    }
+
+
+    // Update is called once per frame
+    void Update()
+    {
+
+        _RaycastHit();
+        InsideTrigger();
+        DestroyPanel();
+
     }
 }

@@ -41,42 +41,43 @@ public class Laptop_GameScript : MonoBehaviour {
 
 
 
-
-    // Update is called once per frame
-    void Update()
+// if raycast hits the laptop collider, set _isInsideTrigger to true else set to false
+    void _RaycastHit()
     {
-
         RaycastHit hit;
         if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, 2))
         {
             if (hit.collider.gameObject.tag == "Game_Laptop")
             {
-                        if (putOffPanel_Game1 == true)// in case this gamescript wasnt played then dont show the panel
-                        {
-                            Laptop_OpenPanel.SetActive(false);// panel is invincible
-                        }
-                        else
-                        {
-                            Laptop_isInsideTrigger = true;
-                            Laptop_OpenPanel.SetActive(true);// panel can now being seen
-                            _animator.SetBool("Laptop_on", true);
-                        }
+                if (putOffPanel_Game1 == true)// in case this gamescript wasnt played then dont show the panel
+                {
+                    Laptop_OpenPanel.SetActive(false);
+                }
+                else
+                {
+                    Laptop_isInsideTrigger = true;
+                    Laptop_OpenPanel.SetActive(true);
+                    _animator.SetBool("Laptop_on", true);
+                }
             }
 
 
         }
         else
         {
-                        Laptop_isInsideTrigger = false;
-                        Laptop_OpenPanel.SetActive(false);// panel is invincible
-                        _animator.SetBool("Laptop_on", false);
-                        laptop_myNumber.text = "";
-                        wrongAnswer.SetActive(false);
+            Laptop_isInsideTrigger = false;
+            Laptop_OpenPanel.SetActive(false);
+            _animator.SetBool("Laptop_on", false);
+            laptop_myNumber.text = "";
+            wrongAnswer.SetActive(false);
 
         }
+    }
 
 
-        // when panel is visible show text 
+    // if player is insideTrigger show panel keyboard
+    void InsideTrigger()
+    {
         if (Laptop_isInsideTrigger)
         {
             Laptop_OpenPanel.SetActive(true);
@@ -92,8 +93,8 @@ public class Laptop_GameScript : MonoBehaviour {
 
                 keypadInput("1");
                 wrongAnswer.SetActive(false);
-                
-                
+
+
             }
 
             if (Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.Keypad2))
@@ -158,8 +159,8 @@ public class Laptop_GameScript : MonoBehaviour {
                     correct = true;
                     _animator.SetBool("Laptop_on", false);
                 }
-              
-                
+
+
                 else
                 {
                     //laptop_myNumber.text = "wrong answer";
@@ -167,25 +168,36 @@ public class Laptop_GameScript : MonoBehaviour {
                     playerStatus.GetDamage(damage);
                     healthbar_blur.showBlur();
                 }
-               
-
-
             }
 
 
 
         }
+
+
         if (correct && Laptop_isInsideTrigger)
         {
-            Reward_OpenPanel.SetActive(true); 
-        }
-        if (correct && Laptop_isInsideTrigger == false)
-        {
-            Reward_OpenPanel.SetActive(false);
-            passwordShownMinimalized.SetActive(true); 
+            StartCoroutine(ShowSuccess());
         }
 
+    }
 
+    //show the the password panel for some seconds and then deactivate and set the mini password panel to true
+    IEnumerator ShowSuccess()
+    {
+        Reward_OpenPanel.SetActive(true);
+        yield return new WaitForSeconds(2f);
+        Reward_OpenPanel.SetActive(false);
+        passwordShownMinimalized.SetActive(true);
+    }
+
+
+
+    // Update is called once per frame
+    void Update()
+    {
+        _RaycastHit();
+        InsideTrigger();
     }
 
 

@@ -37,7 +37,7 @@ public class WeaponSafe_CorridorScript : MonoBehaviour {
         
     }
 
-
+    // for checking if the panel is activ
     private bool IsOpenPanelActive
     {
         get
@@ -46,7 +46,7 @@ public class WeaponSafe_CorridorScript : MonoBehaviour {
         }
     }
 
-
+    // for updating panel text 
     private void UpdatePanelText()
     {
         UnityEngine.UI.Text panelText = OpenPanel.transform.FindChild("Text").GetComponent<UnityEngine.UI.Text>();
@@ -57,16 +57,16 @@ public class WeaponSafe_CorridorScript : MonoBehaviour {
     }
 
     // wait for a certain amount of time till safe is opened and then enable the the weaponInSafe_Collider
-    public IEnumerator openSafe()
+    IEnumerator openSafe()
     {
         yield return new WaitForSeconds(1);
         weaponInSafe_Collider.enabled = true; 
     }
 
-    // Update is called once per frame
-    void Update()
-    {
 
+    // if raycast hits the target, set _isInsideTrigger to true else set to false
+    void _RaycastHit()
+    {
         RaycastHit hit;
         if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, 2))
         {
@@ -101,38 +101,55 @@ public class WeaponSafe_CorridorScript : MonoBehaviour {
             }
         }
 
-        destroyKeycardMinimalized004 = GameObject.FindGameObjectWithTag("keycard004");
-        destroyKeycardIsActiveMinimalized004 = GameObject.FindGameObjectWithTag("keycardIsActive04");
-
+    }
+    // if panel is activ, if _isInsideTrigger is true and mouse pressed, then open the safe 
+    void InsideTrigger()
+    {
         if (inTrigger == true)
         {
 
             if (Input.GetMouseButtonDown(1))
             {
 
-              // if (keycardIsActiv == true)
-               if (true)
+                // if (keycardIsActiv == true)
+                if (true)
                 {
                     _animator.SetBool("openWeaponSafe", true);// open the safe
                     StartCoroutine(openSafe());// wait for a certain amount of time till safe is opened and then enable the the weaponInSafe_Collider
-                    
+
                     OpenPanel.SetActive(false);// panel is invincible
                     _animator.SetBool("weaponSlot_showNoError", true);
                     OpenPanel = null;
                     Laptop_GameScript_3.KeyCard_To_Laptop = false; // deactivate panel "game"
-                                      
+
                 }
 
             }
 
-
-
-
         }
+    }
+
+    
+    void DestroyPanel()
+    {
+        destroyKeycardMinimalized004 = GameObject.FindGameObjectWithTag("keycard004");
+        destroyKeycardIsActiveMinimalized004 = GameObject.FindGameObjectWithTag("keycardIsActive04");
+
+
         if (_animator.GetBool("openWeaponSafe") == true)
         {
             Destroy(destroyKeycardMinimalized004); // destroy the mini panel keycard obtainded
             Destroy(destroyKeycardIsActiveMinimalized004);// destroy the mini panel keycard is activ
         }
+
+    }
+    // Update is called once per frame
+    void Update()
+    {
+
+        _RaycastHit();
+        InsideTrigger();
+        DestroyPanel();
+
     }
 }

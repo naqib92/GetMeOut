@@ -32,6 +32,7 @@ public class MicrowaveScript : MonoBehaviour {
 
 
 
+    // for checking if the microwave panel is activ
     private bool IsOpenPanelActive
     {
         get
@@ -40,7 +41,7 @@ public class MicrowaveScript : MonoBehaviour {
         }
     }
 
-
+    // for updating the microwave panel text
     private void UpdatePanelText()
     {
         UnityEngine.UI.Text panelText = OpenPanel.transform.FindChild("Text").GetComponent<UnityEngine.UI.Text>();
@@ -50,9 +51,10 @@ public class MicrowaveScript : MonoBehaviour {
         }
     }
 
-    // Update is called once per frame
-    void Update () {
 
+    // if raycast hits the microwave door collider, set _isInsideTrigger to true else set to false
+    void _RaycastHit()
+    {
         RaycastHit hit;
         if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, 2))
         {
@@ -60,7 +62,7 @@ public class MicrowaveScript : MonoBehaviour {
             {
                 _isInsideTrigger = true;
                 UpdatePanelText();
-                OpenPanel.SetActive(true);// panel can now being seen
+                OpenPanel.SetActive(true);
             }
 
 
@@ -68,27 +70,36 @@ public class MicrowaveScript : MonoBehaviour {
         else
         {
             _isInsideTrigger = false;
-            OpenPanel.SetActive(false);// panel is invincible
+            OpenPanel.SetActive(false);
         }
 
+    }
+    //if microwave panel is active, _isInsideTrigger is true and mouse is pressed then open the microwave door
+    void InsideTrigger()
+    {
         // when panel is visible show text 
         if (IsOpenPanelActive && _isInsideTrigger)
         {
             if (Input.GetMouseButtonDown(1))
             {
-              //  _isOpen = !_isOpen;
+                //  _isOpen = !_isOpen;
 
-               // UpdatePanelText();
+                // UpdatePanelText();
 
                 _animator.SetBool("open_Microwave", true);
                 OpenPanel.SetActive(false);
                 MicrowaveCollider.enabled = false;
-
-
             }
         }
 
+    }
 
+    // Update is called once per frame
+    void Update ()
+    {
+
+        _RaycastHit();
+        InsideTrigger();
 
     }
 }

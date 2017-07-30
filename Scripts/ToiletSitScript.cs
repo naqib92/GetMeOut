@@ -27,7 +27,7 @@ public class ToiletSitScript : MonoBehaviour {
     }
 
 
-
+    // for checking if the toilet lid panel is activ
     private bool IsOpenPanelActive
     {
         get
@@ -36,7 +36,7 @@ public class ToiletSitScript : MonoBehaviour {
         }
     }
 
-
+    // for updating the toilet lid panel text
     private void UpdatePanelText()
     {
         UnityEngine.UI.Text panelText = OpenPanel.transform.FindChild("Text").GetComponent<UnityEngine.UI.Text>();
@@ -46,8 +46,9 @@ public class ToiletSitScript : MonoBehaviour {
         }
     }
 
-    // Update is called once per frame
-    void Update()
+
+    // if raycast hits the toiletsit collider, set _isInsideTrigger to true else set to false
+    void _RaycastHit()
     {
         RaycastHit hit;
         if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, 2))
@@ -56,7 +57,7 @@ public class ToiletSitScript : MonoBehaviour {
             {
                 _isInsideTrigger = true;
                 UpdatePanelText();
-                OpenPanel.SetActive(true);// panel can now being seen
+                OpenPanel.SetActive(true);
             }
 
 
@@ -64,17 +65,20 @@ public class ToiletSitScript : MonoBehaviour {
         else
         {
             _isInsideTrigger = false;
-            OpenPanel.SetActive(false);// panel is invincible
+            OpenPanel.SetActive(false);
         }
 
-
-        // when panel is visible show text 
+    }
+    //if _isInsideTrigger is true and mouse is pressed open toilet lid
+    void InsideTrigger()
+    {
+   
         if (IsOpenPanelActive && _isInsideTrigger)
         {
             if (Input.GetMouseButtonDown(1))
             {
-                
-               // _isOpen = !_isOpen;
+
+                // _isOpen = !_isOpen;
 
                 //UpdatePanelText();
                 _animator.SetBool("open_ToiletSeat", true);
@@ -83,6 +87,17 @@ public class ToiletSitScript : MonoBehaviour {
 
             }
         }
+
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+        _RaycastHit();
+        InsideTrigger();
+
+
 
     }
 }

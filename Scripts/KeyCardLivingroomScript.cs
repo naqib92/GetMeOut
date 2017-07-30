@@ -15,7 +15,7 @@ public class KeyCardLivingroomScript : MonoBehaviour
     private bool _isOpen = false;
 
 
-
+    // for checking if the key card panel is activ
     private bool IsOpenPanelActive
     {
         get
@@ -24,7 +24,7 @@ public class KeyCardLivingroomScript : MonoBehaviour
         }
     }
 
-
+    // for updating the key card panel text
     private void UpdatePanelText()
     {
         UnityEngine.UI.Text panelText = OpenPanel.transform.FindChild("Text").GetComponent<UnityEngine.UI.Text>();
@@ -33,8 +33,8 @@ public class KeyCardLivingroomScript : MonoBehaviour
             panelText.text = _isOpen ? CloseText : OpenText;//if _isOpen is true return CloseText or else return openText
         }
     }
-
-    void Update()
+    // if raycast hits the key card collider, set _isInsideTrigger to true else set to fals
+    void _RaycastHit()
     {
         RaycastHit hit;
         if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, 3))
@@ -43,17 +43,21 @@ public class KeyCardLivingroomScript : MonoBehaviour
             {
                 inTrigger = true;
                 UpdatePanelText();
-                OpenPanel.SetActive(true);// panel can now being seen
+                OpenPanel.SetActive(true);
             }
 
 
         }
         else
         {
-            OpenPanel.SetActive(false);// panel is invincible
+            OpenPanel.SetActive(false);
             inTrigger = false;
         }
 
+    }
+    //if _isInsideTrigger is true and mouse is pressed destroy key card and display "key card obtained" 
+    void InsideTrigger()
+    {
         // when panel is visible show text 
         if (inTrigger)
         {
@@ -61,10 +65,17 @@ public class KeyCardLivingroomScript : MonoBehaviour
             {
                 DoorBathroomScript.keyCard_To_Bathroom = true;
                 Destroy(this.gameObject);
-                OpenPanel.SetActive(false);// panel is invincible
+                OpenPanel.SetActive(false);
                 shownMinimizedKeycard.SetActive(true);
-}
+            }
         }
+
+    }
+    void Update()
+    {
+
+        _RaycastHit();
+        InsideTrigger();
 
     }
 }

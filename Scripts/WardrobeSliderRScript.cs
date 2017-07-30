@@ -27,7 +27,7 @@ public class WardrobeSliderRScript : MonoBehaviour
  
     }
 
-
+    // for checking if the wardrobeslider panel is activ
         private bool IsOpenPanelActive
         {
             get
@@ -35,8 +35,8 @@ public class WardrobeSliderRScript : MonoBehaviour
                 return OpenPanel.activeInHierarchy;
             }
         }
-  
-        
+
+    // for updating the wardrobeslider panel text    
     private void UpdatePanelText()
     {
         UnityEngine.UI.Text panelText = OpenPanel.transform.FindChild("Text").GetComponent<UnityEngine.UI.Text>();
@@ -46,17 +46,16 @@ public class WardrobeSliderRScript : MonoBehaviour
         }
     }
 
-    public IEnumerator openSlider()
+    IEnumerator OpenSlider()
     {
         yield return new WaitForSeconds(0.3f);
         Keycard_Bedroom.SetActive(true);
     }
 
-
-    // Update is called once per frame
-    void Update()
+    // if raycast hits the wardrobeslider collider, set _isInsideTrigger to true else set to false
+    void _RaycastHit()
     {
-
+        
         RaycastHit hit;
         if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, 2))
         {
@@ -64,7 +63,7 @@ public class WardrobeSliderRScript : MonoBehaviour
             {
                 _isInsideTrigger = true;
                 UpdatePanelText();
-                OpenPanel.SetActive(true);// panel can now being seen
+                OpenPanel.SetActive(true);
             }
 
 
@@ -72,27 +71,40 @@ public class WardrobeSliderRScript : MonoBehaviour
         else
         {
             _isInsideTrigger = false;
-            OpenPanel.SetActive(false);// panel is invincible
+            OpenPanel.SetActive(false);
 
         }
+    }
 
-        // when panel is visible show text 
+    void InsideTrigger()
+    {
+        // if the wardrobeslider panel is activ and if _isInsideTrigger is true
         if (IsOpenPanelActive && _isInsideTrigger)
         {
             if (Input.GetMouseButtonDown(1))
             {
-               // _isOpen = !_isOpen;
+                // _isOpen = !_isOpen;
 
-               // UpdatePanelText();
+                // UpdatePanelText();
 
                 _animator.SetBool("open_WardrobeSliderR", true);
                 OpenPanel.SetActive(false);
-                StartCoroutine(openSlider());
+                StartCoroutine(OpenSlider());
                 WadrobeCollider.enabled = false;
 
 
             }
         }
+
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+        _RaycastHit();
+        InsideTrigger();
+
    
     }
 }

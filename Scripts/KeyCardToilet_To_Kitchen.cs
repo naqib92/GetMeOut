@@ -15,20 +15,9 @@ public class KeyCardToilet_To_Kitchen : MonoBehaviour {
     private bool _isOpen = false;
     public bool inTrigger;
 
-    void OnTriggerEnter(Collider other)
-    {
-        inTrigger = true;
-        UpdatePanelText();
-        OpenPanel.SetActive(true);// panel can now being seen
-    }
-
-    void OnTriggerExit(Collider other)
-    {
-        OpenPanel.SetActive(false);// panel is invincible
-        inTrigger = false;
-    }
 
 
+    // for checking if the key card panel is activ
     private bool IsOpenPanelActive
     {
         get
@@ -38,6 +27,7 @@ public class KeyCardToilet_To_Kitchen : MonoBehaviour {
     }
 
 
+    // for updating the key card panel text
     private void UpdatePanelText()
     {
         UnityEngine.UI.Text panelText = OpenPanel.transform.FindChild("Text").GetComponent<UnityEngine.UI.Text>();
@@ -47,7 +37,9 @@ public class KeyCardToilet_To_Kitchen : MonoBehaviour {
         }
     }
 
-    void Update()
+
+    // if raycast hits the key card collider, set _isInsideTrigger to true else set to false
+    void _RaycastHit()
     {
         RaycastHit hit;
         if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, 3))
@@ -56,24 +48,31 @@ public class KeyCardToilet_To_Kitchen : MonoBehaviour {
             {
                 inTrigger = true;
                 UpdatePanelText();
-                OpenPanel.SetActive(true);// panel can now being seen
+                OpenPanel.SetActive(true);
             }
 
 
         }
         else
         {
-            OpenPanel.SetActive(false);// panel is invincible
+            OpenPanel.SetActive(false);
             inTrigger = false;
         }
-        // when panel is visible show text 
+
+    }
+
+
+    //if _isInsideTrigger is true and mouse is pressed destroy key card and display "key card obtained" 
+    void InsideTrigger()
+    {
+
         if (inTrigger)
         {
             if (Input.GetMouseButtonDown(1))
             {
-                
-                DoorKitchenScript.KeyCard_To_Laptop = true;
-                Laptop_GameScript_2.KeyCard_To_Laptop = true;
+
+                DoorKitchenScript.KeyCard_To_Laptop = true;// set to true so the kitchen door shows "go do activation to open" 
+                Laptop_GameScript_2.KeyCard_To_Laptop = true;// set to true so player can play the second game
 
                 Laptop_GameScript.putOffPanel_Game1 = true;// in case first game wasnt played then dont show the panel
                 //Laptop_GameScript_2.putLaptopOn = true;
@@ -82,6 +81,12 @@ public class KeyCardToilet_To_Kitchen : MonoBehaviour {
                 shownMinimizedKeycard003.SetActive(true);
             }
         }
+
+    }
+    void Update()
+    {
+        _RaycastHit();
+        InsideTrigger();
 
     }
 }

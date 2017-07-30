@@ -16,7 +16,7 @@ public class KeyCardBedroomScript : MonoBehaviour {
 
 
 
-
+    // for checking if the key card panel is activ
     private bool IsOpenPanelActive
     {
         get
@@ -25,7 +25,7 @@ public class KeyCardBedroomScript : MonoBehaviour {
         }
     }
 
-
+    // for updating the key card panel text
     private void UpdatePanelText()
     {
         UnityEngine.UI.Text panelText = OpenPanel.transform.FindChild("Text").GetComponent<UnityEngine.UI.Text>();
@@ -35,9 +35,10 @@ public class KeyCardBedroomScript : MonoBehaviour {
         }
     }
 
-    void Update()
-    {
 
+    // if raycast hits the key card collider, set _isInsideTrigger to true else set to false
+    void _RaycastHit()
+    {
         RaycastHit hit;
         if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, 2))
         {
@@ -45,7 +46,7 @@ public class KeyCardBedroomScript : MonoBehaviour {
             {
                 inTrigger = true;
                 UpdatePanelText();
-                OpenPanel.SetActive(true);// panel can now being seen
+                OpenPanel.SetActive(true);
 
             }
 
@@ -53,15 +54,18 @@ public class KeyCardBedroomScript : MonoBehaviour {
         }
         else
         {
-            OpenPanel.SetActive(false);// panel is invincible
+            OpenPanel.SetActive(false);
             inTrigger = false;
 
         }
 
+    }
 
 
 
-        // when panel is visible show text 
+    // if _isInsideTrigger is true and mouse is pressed destroy key card and display "key card obtained" 
+    void InsideTrigger()
+    {
         if (inTrigger)
         {
             if (Input.GetMouseButtonDown(1))
@@ -72,6 +76,17 @@ public class KeyCardBedroomScript : MonoBehaviour {
                 shownMinimizedKeycard.SetActive(true);
             }
         }
-    
+
+    }
+
+
+
+
+
+
+    void Update()
+    {
+        _RaycastHit();
+        InsideTrigger();
     }
 }

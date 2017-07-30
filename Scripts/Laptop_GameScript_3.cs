@@ -36,14 +36,9 @@ public class Laptop_GameScript_3 : MonoBehaviour {
         healthbar_blur = GetComponent<HealthBar_BlurScript>();
     }
 
-
-
-
-    // Update is called once per frame
-    void Update()
+    // if raycast hits the laptop collider, set _isInsideTrigger to true else set to false
+    void _RaycastHit()
     {
-
-
 
         RaycastHit hit;
         if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, 2))
@@ -54,7 +49,7 @@ public class Laptop_GameScript_3 : MonoBehaviour {
                 if (KeyCard_To_Laptop == true)
                 {
 
-                    Laptop_OpenPanel3.SetActive(true);// panel can now being seen
+                    Laptop_OpenPanel3.SetActive(true);
                     _animator.SetBool("Laptop_on", true);
                 }
             }
@@ -64,17 +59,19 @@ public class Laptop_GameScript_3 : MonoBehaviour {
         else
         {
             Laptop_isInsideTrigger = false;
-            Laptop_OpenPanel3.SetActive(false);// panel is invincible
+            Laptop_OpenPanel3.SetActive(false);
 
             laptop_myNumber.text = "";
             wrongAnswer.SetActive(false);
             _animator.SetBool("Laptop_on", false);
 
         }
+    }
 
-
-
-
+    // if player is insideTrigger show panel keyboard
+    void InsideTrigger()
+    {
+        
         if (KeyCard_To_Laptop == true)
         {
 
@@ -170,7 +167,7 @@ public class Laptop_GameScript_3 : MonoBehaviour {
 
             if (correct && Laptop_isInsideTrigger)
             {
-                Reward_OpenPanel3.SetActive(true);
+                StartCoroutine(ShowSuccess());
                 shownMinimizedKeycard004.SetActive(false);//for deactivating panel_keycard04_minimized when answer is correct
                 keycardIsActive_minimized004.SetActive(true); //to activate panel keycardIsActive_minimized when answer is correct
 
@@ -180,14 +177,35 @@ public class Laptop_GameScript_3 : MonoBehaviour {
             }
             if (correct && Laptop_isInsideTrigger == false)
             {
-                Reward_OpenPanel3.SetActive(false);
-                shownMinimizedKeycard004.SetActive(false);//for deactivating panel_keycard04_minimized when answer is correct
-                keycardIsActive_minimized004.SetActive(true);//to activate panel keycardIsActive_minimized when answer is correct
+               
+                shownMinimizedKeycard004.SetActive(false);//for deactivating minimized panel keycard04(key card obtained) when answer is correct
+                keycardIsActive_minimized004.SetActive(true);//to activate minimized panel "key card is activ" when answer is correct
 
             }
 
         }
 
+    }
+
+
+    //show the the panel "key card is activ" for some seconds and then deactivate
+    IEnumerator ShowSuccess()
+    {
+        Reward_OpenPanel3.SetActive(true);
+        yield return new WaitForSeconds(2f);
+        Reward_OpenPanel3.SetActive(false);
+       // shownMinimizedKeycard004.SetActive(false);//for deactivating minimized panel keycard04(key card obtained) when answer is correct
+       // keycardIsActive_minimized004.SetActive(true);//to activate minimized panel "key card is activ" when answer is correct
+    }
+
+
+
+
+    // Update is called once per frame
+    void Update()
+    {
+        _RaycastHit();
+        InsideTrigger();
     }
 
 
