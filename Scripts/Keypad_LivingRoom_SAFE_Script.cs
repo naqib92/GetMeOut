@@ -69,7 +69,7 @@ public class Keypad_LivingRoom_SAFE_Script : MonoBehaviour
         {
             
 
-            OpenPanel_Keypad.SetActive(true);
+        
             if (Input.GetKeyDown(KeyCode.Alpha0) || Input.GetKeyDown(KeyCode.Keypad0))
             {
                 keypadInput("0");

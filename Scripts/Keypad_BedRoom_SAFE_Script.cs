@@ -45,17 +45,19 @@ public class Keypad_BedRoom_SAFE_Script : MonoBehaviour
             if (hit.collider.gameObject.tag == "safe_Bedroom")
             {
                 bedroom_inTrigger = true;
-                OpenPanel_Keypad.SetActive(true);// panel can now being seen
-
+                OpenPanel_Keypad.SetActive(true);
             }
-
+            if (hit.collider.gameObject.tag == "chestdrawer_Bedroom")// in case raycast hits the chestdrawer Safe then deactivate the bedroom safe panel
+            {
+                OpenPanel_Keypad.SetActive(false);
+            }
 
         }
         else
         {
             bedroom_inTrigger = false;
             bedroom_keyPadScreen = false;
-            OpenPanel_Keypad.SetActive(false);// panel can now being seen
+            OpenPanel_Keypad.SetActive(false);
 
         }
 
@@ -66,10 +68,10 @@ public class Keypad_BedRoom_SAFE_Script : MonoBehaviour
         {
             
             //keyboard
-            OpenPanel_Keypad.SetActive(true);
             if (Input.GetKeyDown(KeyCode.Alpha0) || Input.GetKeyDown(KeyCode.Keypad0))
             {
                 keypadInput("0");
+
             }
 
             if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Keypad1))

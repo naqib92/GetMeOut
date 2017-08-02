@@ -9,7 +9,7 @@ public class ChestDrawerOpenScript : MonoBehaviour
     public GameObject Paper;//paper.png
     public GameObject Panel_Chestdrawer = null;
     public GameObject OpenPanel_ToReadPaper;
-
+    public Camera fpsCam;
 
     private bool _isInsideTrigger = false;
     public string OpenText = "open drawer";
@@ -31,30 +31,7 @@ public class ChestDrawerOpenScript : MonoBehaviour
 
     }
 
-    //collision with the box collider
-    void OnTriggerEnter(Collider other)
-    {
 
-        if (other.tag == "Player")
-        {
-            _isInsideTrigger = true;
-            UpdatePanelText();
-            Panel_Chestdrawer.SetActive(true);// panel can now being seen
-
-        }
-
-    }
-
-    //movement out of the box collider
-    void OnTriggerExit(Collider other)
-    {
-        if (other.tag == "Player")
-        {
-            _isInsideTrigger = false;
-            Panel_Chestdrawer.SetActive(false);// panel is invincible
-            OpenPanel_ToReadPaper.SetActive(false);
-        }
-    }
 
     // for checking if the drawer panel is activ
     private bool IsOpenPanelActive
@@ -75,14 +52,41 @@ public class ChestDrawerOpenScript : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
+
+    // if raycast hits the chestdrawer collider, set _isInsideTrigger to true else set to false
+    void _RaycastHit()
     {
 
+        RaycastHit hit;
+        if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, 3))
+        {
+            if (hit.collider.gameObject.tag == "chestdrawer_Bedroom")
+            {
+                _isInsideTrigger = true;
+                UpdatePanelText();
+                Panel_Chestdrawer.SetActive(true);
+            }
+            if (hit.collider.gameObject.tag == "safe_Bedroom")// in case raycast hits the bedroom Safe then deactivate the chestdrawer or paper panel
+            {
+                Panel_Chestdrawer.SetActive(false);
+            }
+
+
+        }
+        else
+        {
+            _isInsideTrigger = false;
+            Panel_Chestdrawer.SetActive(false);
+            OpenPanel_ToReadPaper.SetActive(false);
+
+        }
+    }
 
 
 
-        // if panel is activ and if _isInsideTrigger is true
+    void InsideTrigger()
+    {
+        // if the chestdrawer panel is activ and if _isInsideTrigger is true
         if (IsOpenPanelActive && _isInsideTrigger)
         {
             if (Input.GetMouseButtonDown(1))
@@ -96,13 +100,13 @@ public class ChestDrawerOpenScript : MonoBehaviour
         }
         if (_animator.GetBool("open") == true)
         {
-                 if (Time.time >= time + 0.7f)// time starts running when the drawer is opened. if time reaches 0.7sec then do the code under
-                 {
-          
+            if (Time.time >= time + 0.7f)// time starts running when the drawer is opened. if time reaches 0.7sec then do the code under
+            {
+
                 OpenPanel_ToReadPaper.SetActive(true);
                 Paper.SetActive(true);
-                
-                }
+
+            }
         }
         else// if panel is not opened put time to 0
         {
@@ -115,6 +119,13 @@ public class ChestDrawerOpenScript : MonoBehaviour
         {
             OpenPanel_ToReadPaper.SetActive(false);
         }
+
+    }
+    // Update is called once per frame
+    void Update()
+    {
+        _RaycastHit();
+        InsideTrigger();
     }
 
 

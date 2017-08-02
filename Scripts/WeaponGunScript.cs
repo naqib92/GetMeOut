@@ -22,7 +22,7 @@ public class WeaponGunScript : MonoBehaviour {
 
     private Animator _animator;
     public Camera fpsCam;// used to shoot a Raycast from the camera
-    public ParticleSystem muzzleFlash;//particle effect Afterburner
+    public ParticleSystem projectile;//particle effect projectile /lasers or afterburners or etc....
     public GameObject impactEffect;//enemy has to have a rigid body// impact effect(particle effect Shockwave) after enemy is hit with a raycast 
     private WeaponGunAmmoStatus wGAS;
     public Image bar;
@@ -88,7 +88,7 @@ public class WeaponGunScript : MonoBehaviour {
     {
         currentAmmo -= declineAmmo;
 
-        muzzleFlash.Play();
+        projectile.Play();
         RaycastHit hit; //store information about what we hit with out ray
 
         //to shoot out a ray

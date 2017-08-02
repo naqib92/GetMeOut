@@ -51,7 +51,7 @@ public class ToiletSitScript : MonoBehaviour {
     void _RaycastHit()
     {
         RaycastHit hit;
-        if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, 2))
+        if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, 3))
         {
             if (hit.collider.gameObject.tag == "ToiletSit")
             {

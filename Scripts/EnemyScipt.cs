@@ -2,7 +2,7 @@
 using UnityEngine.UI;
 public class EnemyScipt : MonoBehaviour {
 
-    public float maxHealth = 5f; // healt of the enemy
+    public float maxHealth = 5f; // health of the enemy
     public float currentHealth = 0f;
     public Image bar;
 

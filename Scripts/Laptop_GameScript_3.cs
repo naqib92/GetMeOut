@@ -12,6 +12,7 @@ public class Laptop_GameScript_3 : MonoBehaviour {
     public GameObject keycardIsActive_minimized004;// to activate panel keycardIsActive_minimized04 when answer is correct
     public GameObject shownMinimizedKeycard004; //for deactivating panel_keycard04_minimized when answer is correct
     public GameObject wrongAnswer;
+    public GameObject enterA_Number;
     private PlayerStatusScript playerStatus; //playerStatus.GetDamage(damage);
     private HealthBar_BlurScript healthbar_blur;
     public Camera fpsCam;
@@ -19,10 +20,10 @@ public class Laptop_GameScript_3 : MonoBehaviour {
 
 
     private bool Laptop_isInsideTrigger = false;
-    public string currentAnswer3 = "2";
+    public string currentAnswer3 = "24";
     public bool correct = false;
     public static bool KeyCard_To_Laptop;
-    public int damage = 20;
+    public int damage = 5;
 
     //keypad input
     string laptop_number = null;
@@ -53,6 +54,10 @@ public class Laptop_GameScript_3 : MonoBehaviour {
                     _animator.SetBool("Laptop_on", true);
                 }
             }
+            if (hit.collider.gameObject.tag == "Book_binary")//in case raycast hits the open book then deactivate the laptop panel
+            {
+                Laptop_OpenPanel3.SetActive(false);
+            }
 
 
         }
@@ -61,10 +66,10 @@ public class Laptop_GameScript_3 : MonoBehaviour {
             Laptop_isInsideTrigger = false;
             Laptop_OpenPanel3.SetActive(false);
 
-            laptop_myNumber.text = "";
-            wrongAnswer.SetActive(false);
+            laptop_myNumber.text = "";//reset input field when raycast looks away from collider
+            wrongAnswer.SetActive(false);// deactivate wrong answer when raycast looks away from collider
             _animator.SetBool("Laptop_on", false);
-
+            enterA_Number.SetActive(false);
         }
     }
 
@@ -77,11 +82,12 @@ public class Laptop_GameScript_3 : MonoBehaviour {
 
             if (Laptop_isInsideTrigger)
             {
-                Laptop_OpenPanel3.SetActive(true);
+             
                 if (Input.GetKeyDown(KeyCode.Alpha0) || Input.GetKeyDown(KeyCode.Keypad0))
                 {
                     keypadInput("0");
                     wrongAnswer.SetActive(false);
+                    enterA_Number.SetActive(false);
                 }
 
                 if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Keypad1))
@@ -89,54 +95,63 @@ public class Laptop_GameScript_3 : MonoBehaviour {
 
                     keypadInput("1");
                     wrongAnswer.SetActive(false);
+                    enterA_Number.SetActive(false);
                 }
 
                 if (Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.Keypad2))
                 {
                     keypadInput("2");
                     wrongAnswer.SetActive(false);
+                    enterA_Number.SetActive(false);
                 }
 
                 if (Input.GetKeyDown(KeyCode.Alpha3) || Input.GetKeyDown(KeyCode.Keypad3))
                 {
                     keypadInput("3");
                     wrongAnswer.SetActive(false);
+                    enterA_Number.SetActive(false);
                 }
 
                 if (Input.GetKeyDown(KeyCode.Alpha4) || Input.GetKeyDown(KeyCode.Keypad4))
                 {
                     keypadInput("4");
                     wrongAnswer.SetActive(false);
+                    enterA_Number.SetActive(false);
                 }
 
                 if (Input.GetKeyDown(KeyCode.Alpha5) || Input.GetKeyDown(KeyCode.Keypad5))
                 {
                     keypadInput("5");
                     wrongAnswer.SetActive(false);
+                    enterA_Number.SetActive(false);
                 }
 
                 if (Input.GetKeyDown(KeyCode.Alpha6) || Input.GetKeyDown(KeyCode.Keypad6))
                 {
                     keypadInput("6");
                     wrongAnswer.SetActive(false);
+                    enterA_Number.SetActive(false);
                 }
 
                 if (Input.GetKeyDown(KeyCode.Alpha7) || Input.GetKeyDown(KeyCode.Keypad7))
                 {
                     keypadInput("7");
                     wrongAnswer.SetActive(false);
+                    enterA_Number.SetActive(false);
                 }
 
                 if (Input.GetKeyDown(KeyCode.Alpha8) || Input.GetKeyDown(KeyCode.Keypad8))
                 {
                     keypadInput("8");
                     wrongAnswer.SetActive(false);
+                    enterA_Number.SetActive(false);
                 }
 
                 if (Input.GetKeyDown(KeyCode.Alpha9) || Input.GetKeyDown(KeyCode.Keypad9))
                 {
                     keypadInput("9");
                     wrongAnswer.SetActive(false);
+                    enterA_Number.SetActive(false);
                 }
 
                 if (Input.GetKeyDown(KeyCode.Delete) || Input.GetKeyDown(KeyCode.Backspace))
@@ -152,7 +167,10 @@ public class Laptop_GameScript_3 : MonoBehaviour {
                         Laptop_OpenPanel3 = null;
                         correct = true;
                     }
-
+                    else if (laptop_myNumber.text == "")
+                    {
+                        enterA_Number.SetActive(true);
+                    }
 
                     else
                     {
@@ -217,6 +235,7 @@ public class Laptop_GameScript_3 : MonoBehaviour {
         laptop_number = laptop__key;
         laptop_myNumber.text += laptop_number;
         wrongAnswer.SetActive(false);
+        enterA_Number.SetActive(false);
 
         //delete button
         if (laptop__key == "d")
