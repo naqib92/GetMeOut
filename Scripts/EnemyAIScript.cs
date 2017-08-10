@@ -13,20 +13,31 @@ using System.Collections;
 
 public class EnemyAIScript : MonoBehaviour
 {
+    
     public Transform player;//FPSController
-    public Transform eyes;// A sphere with a disabled mesh renderer is used for the eyes(Radar)
+    public Transform eyesFront;// A cone with a disabled mesh renderer is used for the front eye(Radar)
+    public Transform eyesFrontLeft;// A cone with a disabled mesh renderer is used for the front left eye(Radar)
+    public Transform eyesFrontRight;// A cone with a disabled mesh renderer is used for the front right eye(Radar)
+    public Transform eyesBehindRight;// A cone with a disabled mesh renderer is used for the back right eye(Radar)
+    public Transform eyesBehindFront;// A cone with a disabled mesh renderer is used for the back eye(Radar)
     private Animator anim;
     private NavMeshAgent nav;
+    public GameObject miniMapArrow; //for changing the color mini map arrow when player gets near enemy
+    public GameObject miniMapArrowRing;//for changing the color mini map ring when player gets near enemy
 
+    private float showTime;//For Debugging. used to show how much time has passed in the console
     private string state = "chooseA_SpotToWalk";
     private bool alive = true;
-    private bool isOutside = false;
+    public static bool isOutside = false; // the enemies are activated when the player is outside. This is set in DoorOutsideDeactivatePanel.cs
     private float wait;//when player out runs the enemy, the enemy chases the player for some time and looses interest
     private float standStill;// when enemy reaches path position, enemy should stay still for a certain amount of time and move after
 
     private float nearAttack_distance;//when enemy gets near the player 
     private float inFrontAttack_distance;//when enemy is in front of player
     private float outOfSight;//when player out runs the enemy, the enemy looses interest
+    
+
+
 
 
 
@@ -39,18 +50,22 @@ public class EnemyAIScript : MonoBehaviour
         anim = GetComponent<Animator>();
         nav = GetComponent<NavMeshAgent>();
         nav.speed = 1.2f;     //enemy speed
+        //anim.speed = 1.2f;
     }
 
     //check if we can see the player
+    //obstacles(crystal and rocks) Layers in the Inspector are set to ignore Raycast so the enemy can see through them 
+
     public void CheckSight()
     {
-        if (alive)
-        {
+        //if (alive == true && isOutside == true)
+            if (alive)
+            {
 
             RaycastHit rayHit;
-            if (Physics.Linecast(eyes.position, player.transform.position, out rayHit))
+            if (Physics.Linecast(eyesFront.position, player.transform.position, out rayHit))
             {
-                //print("hit" + rayHit.collider.gameObject.name); //show the name of the objects that where hit with the raycast
+                //print("hit" + rayHit.collider.gameObject.name); //show the name of the objects that were hit with the raycast
 
 
                 if (rayHit.collider.gameObject.name == "FPSController")
@@ -61,19 +76,101 @@ public class EnemyAIScript : MonoBehaviour
                     if (state != "inPlainSight")
                     {
                         state = "chase";
-                        nav.speed = 3.5f;
+                        nav.speed = 3.7f;
+                        //anim.speed = 3.7f;
                         wait = 10f;
+                    }
+                }
+            }
+            RaycastHit rayHit1;
+            if (Physics.Linecast(eyesFrontLeft.position, player.transform.position, out rayHit1))
+            {
+                //print("hit" + rayHit.collider.gameObject.name); //show the name of the objects that were hit with the raycast
+
+
+                if (rayHit.collider.gameObject.name == "FPSController")
+                {
+
+                    // if state variable hasnt been initiated with "inPlainSight", which it hasnt, then overwrite state variable with "chase". 
+                    // This means any other state which is activ will be overwritten with state = "chase" in the moment raycast collides with the player
+                    if (state != "inPlainSight")
+                    {
+                        state = "chase";
+                        nav.speed = 3.7f;
+                        //anim.speed = 3.7f;
+                        wait = 10f;
+                    }
+                }
+            }
+            RaycastHit rayHit2;
+            if (Physics.Linecast(eyesFrontRight.position, player.transform.position, out rayHit2))
+            {
+                //print("hit" + rayHit.collider.gameObject.name); //show the name of the objects that were hit with the raycast
+
+
+                if (rayHit.collider.gameObject.name == "FPSController")
+                {
+
+                    // if state variable hasnt been initiated with "inPlainSight", which it hasnt, then overwrite state variable with "chase". 
+                    // This means any other state which is activ will be overwritten with state = "chase" in the moment raycast collides with the player
+                    if (state != "inPlainSight")
+                    {
+                        state = "chase";
+                        nav.speed = 3.7f;
+                        //anim.speed = 3.7f;
+                        wait = 10f;
+                    }
+                }
+                RaycastHit rayHit3;
+                if (Physics.Linecast(eyesBehindRight.position, player.transform.position, out rayHit3))
+                {
+                    //print("hit" + rayHit.collider.gameObject.name); //show the name of the objects that were hit with the raycast
+
+
+                    if (rayHit.collider.gameObject.name == "FPSController")
+                    {
+
+                        // if state variable hasnt been initiated with "inPlainSight", which it hasnt, then overwrite state variable with "chase". 
+                        // This means any other state which is activ will be overwritten with state = "chase" in the moment raycast collides with the player
+                        if (state != "inPlainSight")
+                        {
+                            state = "chase";
+                            nav.speed = 3.7f;
+                            //anim.speed = 3.7f;
+                            wait = 10f;
+                        }
+                    }
+                }
+                RaycastHit rayHit4;
+                if (Physics.Linecast(eyesBehindFront.position, player.transform.position, out rayHit4))
+                {
+                    //print("hit" + rayHit.collider.gameObject.name); //show the name of the objects that were hit with the raycast
+
+
+                    if (rayHit.collider.gameObject.name == "FPSController")
+                    {
+
+                        // if state variable hasnt been initiated with "inPlainSight", which it hasnt, then overwrite state variable with "chase". 
+                        // This means any other state which is activ will be overwritten with state = "chase" in the moment raycast collides with the player
+                        if (state != "inPlainSight")
+                        {
+                            state = "chase";
+                            nav.speed = 3.7f;
+                           // anim.speed = 3.7f;
+                            wait = 10f;
+                        }
                     }
                 }
             }
         }
     }
 
+
     // Update is called once per frame
     void Update()
     {
-
-        Debug.DrawLine(eyes.position, player.transform.position, Color.red);//draws a line in the scene window to show distance between player and enemy
+        
+        Debug.DrawLine(eyesFront.position, player.transform.position, Color.red);//draws a line in the scene window to show distance between player and enemy
         if (alive)
         {
 
@@ -88,7 +185,7 @@ public class EnemyAIScript : MonoBehaviour
                 NavMeshHit navHit;
                 NavMesh.SamplePosition(transform.position + randomPos, out navHit, 20f, NavMesh.AllAreas);//Find a random position to walk to from the starting point in a radius of 20
                 nav.SetDestination(navHit.position);
-                standStill = 1f;
+                standStill = 2f;
                 state = "chooseAnotherSpot";
                 
             }
@@ -98,18 +195,24 @@ public class EnemyAIScript : MonoBehaviour
             {
                 if (nav.remainingDistance <= nav.stoppingDistance && !nav.pathPending)
                 {
-                    Debug.Log("arrived");
-                    anim.SetBool("isWalking", false);
-                    anim.SetBool("isIdle", true);
+                    //Debug.Log("arrived");
+                    //state = "chooseA_SpotToWalk";
 
+                   // /** not working properly                   
+                     anim.SetBool("isWalking", false);
+                     anim.SetBool("isIdle", true);
                     // when enemy reaches path position, enemy should stay still for a certain amount of time and move after
                     if (standStill > 0)
                     {
+
                         standStill -= Time.deltaTime;
                     }else
                     {
+                        anim.SetBool("isIdle", false);
+                        anim.SetBool("isWalking", true);
                         state = "chooseA_SpotToWalk";
                     }
+                  //  **/
                 }
 
 
@@ -117,24 +220,38 @@ public class EnemyAIScript : MonoBehaviour
             //chase
             if (state == "chase")
             {
-                
+                MiniMap_ChangeIconColor changeArrow = miniMapArrow.GetComponent<MiniMap_ChangeIconColor>();
+                MiniMap_ChangeIconColor changeRing = miniMapArrowRing.GetComponent<MiniMap_ChangeIconColor>();
+                changeArrow.changeMiniMapColor = true; // change color of minimapArrow icon to red. 
+                changeRing.changeMiniMapColor = true; // change color of minimapRing icon to red
+
+
                 anim.SetBool("isWalking", true);
                 anim.SetBool("isIdle", false);
                 nav.destination = player.transform.position;
 
                 //when player out runs the enemy, the enemy looses interest
-                //if player is out of the enemys field for a certain amount of time the enemy goes back patrolling
+                //if player is out of the enemys field for a certain time of seconds the enemy goes back patrolling
                 outOfSight = Vector3.Distance(transform.position, player.transform.position);
                 if (outOfSight > 20)
                 {
                     Debug.Log("Player is out of enemies sight");
                     if (wait > 0f)
                     {
+                        showTime += Time.deltaTime;
+                        Debug.Log(showTime);
                         wait -= Time.deltaTime;
                     }else
                     {
+
+                        changeArrow.changeMiniMapColor = false; // change color of minimapArrow icon back to yellow
+                        changeRing.changeMiniMapColor = false; // change color of minimapRing icon back to yellow
+
+
+                        showTime = 0;
                         Debug.Log("Enemy has stopped chasing you");
                         nav.speed = 1.2f;
+                        //anim.speed = 1.2f;
                         state = "chooseAnotherSpot";
                     }
 
