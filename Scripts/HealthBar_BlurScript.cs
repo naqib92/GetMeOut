@@ -15,14 +15,14 @@ public class HealthBar_BlurScript : MonoBehaviour {
     }
 
 
-    public void showBlur()
+    public void ShowBlur()
     {
 
-        StartCoroutine(onOff_Healthblur());
+        StartCoroutine(OnOff_Healthblur());
 
     }
 
-    public IEnumerator onOff_Healthblur()
+    public IEnumerator OnOff_Healthblur()
     {
 
         barRedBlur.enabled = true;

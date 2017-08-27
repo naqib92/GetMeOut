@@ -2,28 +2,37 @@
 using System.Collections;
 using UnityEngine.UI;
 
-public class Laptop_GameScript_3 : MonoBehaviour {
+public class Laptop_GameScript_3 : MonoBehaviour
+{
 
-    // atoms are composed of
+
 
     private Animator _animator;
-    public GameObject Laptop_OpenPanel3;
-    public GameObject Reward_OpenPanel3;
+    private PlayerStatusScript playerStatus; //playerStatus.GetDamage(damage);
+    private HealthBar_BlurScript healthbar_blur;//off on healthbar blur when damage is taken
+
+    public GameObject laptop_OpenPanel3;//open panel when player is near laptop
+    public GameObject reward_OpenPanel3;// open panel if anwser is correct
+    [Space]
+    [Space]
     public GameObject keycardIsActive_minimized004;// to activate panel keycardIsActive_minimized04 when answer is correct
     public GameObject shownMinimizedKeycard004; //for deactivating panel_keycard04_minimized when answer is correct
-    public GameObject wrongAnswer;
-    public GameObject enterA_Number;
-    private PlayerStatusScript playerStatus; //playerStatus.GetDamage(damage);
-    private HealthBar_BlurScript healthbar_blur;
-    public Camera fpsCam;
-
-
-
-    private bool Laptop_isInsideTrigger = false;
+    [Space]
+    [Space]
+    public GameObject wrongAnswer;//if anwser is wrong display "wrong answer"
+    public GameObject enterA_Number;//if input field is empty and player presses enter display "type in a number"
+    [Space]
+    [Space]
+    public Camera fpsCam;// fpscam for raycast
+    [Space]
+    [Space]
+    private bool laptop_isInsideTrigger = false;
     public string currentAnswer3 = "24";
     public bool correct = false;
-    public static bool KeyCard_To_Laptop;
-    public int damage = 5;
+    public static bool keyCard_To_Laptop;
+    [Space]
+    [Space]
+    private float damage = 0.05f;// 0.05 * 100 = 5 damage units
 
     //keypad input
     string laptop_number = null;
@@ -46,25 +55,25 @@ public class Laptop_GameScript_3 : MonoBehaviour {
         {
             if (hit.collider.gameObject.tag == "Game_Laptop")
             {
-                Laptop_isInsideTrigger = true;
-                if (KeyCard_To_Laptop == true)
+                laptop_isInsideTrigger = true;
+                if (keyCard_To_Laptop == true)
                 {
 
-                    Laptop_OpenPanel3.SetActive(true);
+                    laptop_OpenPanel3.SetActive(true);
                     _animator.SetBool("Laptop_on", true);
                 }
             }
             if (hit.collider.gameObject.tag == "Book_binary")//in case raycast hits the open book then deactivate the laptop panel
             {
-                Laptop_OpenPanel3.SetActive(false);
+                laptop_OpenPanel3.SetActive(false);
             }
 
 
         }
         else
         {
-            Laptop_isInsideTrigger = false;
-            Laptop_OpenPanel3.SetActive(false);
+            laptop_isInsideTrigger = false;
+            laptop_OpenPanel3.SetActive(false);
 
             laptop_myNumber.text = "";//reset input field when raycast looks away from collider
             wrongAnswer.SetActive(false);// deactivate wrong answer when raycast looks away from collider
@@ -76,13 +85,13 @@ public class Laptop_GameScript_3 : MonoBehaviour {
     // if player is insideTrigger show panel keyboard
     void InsideTrigger()
     {
-        
-        if (KeyCard_To_Laptop == true)
+
+        if (keyCard_To_Laptop == true)
         {
 
-            if (Laptop_isInsideTrigger)
+            if (laptop_isInsideTrigger)
             {
-             
+
                 if (Input.GetKeyDown(KeyCode.Alpha0) || Input.GetKeyDown(KeyCode.Keypad0))
                 {
                     keypadInput("0");
@@ -163,8 +172,8 @@ public class Laptop_GameScript_3 : MonoBehaviour {
                 {
                     if (laptop_myNumber.text == currentAnswer3)
                     {
-                        Laptop_OpenPanel3.SetActive(false);
-                        Laptop_OpenPanel3 = null;
+                        laptop_OpenPanel3.SetActive(false);
+                        laptop_OpenPanel3 = null;
                         correct = true;
                     }
                     else if (laptop_myNumber.text == "")
@@ -177,25 +186,25 @@ public class Laptop_GameScript_3 : MonoBehaviour {
                         //laptop_myNumber.text = "wrong answer";
                         wrongAnswer.SetActive(true);
                         playerStatus.GetDamage(damage);
-                        healthbar_blur.showBlur();
+                        healthbar_blur.ShowBlur();
                     }
                 }
             }
 
 
-            if (correct && Laptop_isInsideTrigger)
+            if (correct && laptop_isInsideTrigger)
             {
                 StartCoroutine(ShowSuccess());
                 shownMinimizedKeycard004.SetActive(false);//for deactivating panel_keycard04_minimized when answer is correct
                 keycardIsActive_minimized004.SetActive(true); //to activate panel keycardIsActive_minimized when answer is correct
 
                 WeaponSafe_CorridorScript.keycardIsActiv = true; // key card is now activ for the door to open
-                WeaponSafe_CorridorScript.KeyCard_To_Laptop = false;// dont show key needs to be activated since the answer is correct   
+                WeaponSafe_CorridorScript.keyCard_To_Laptop = false;// dont show key needs to be activated since the answer is correct   
                 _animator.SetBool("Laptop_on", false);
             }
-            if (correct && Laptop_isInsideTrigger == false)
+            if (correct && laptop_isInsideTrigger == false)
             {
-               
+
                 shownMinimizedKeycard004.SetActive(false);//for deactivating minimized panel keycard04(key card obtained) when answer is correct
                 keycardIsActive_minimized004.SetActive(true);//to activate minimized panel "key card is activ" when answer is correct
 
@@ -209,11 +218,11 @@ public class Laptop_GameScript_3 : MonoBehaviour {
     //show the the panel "key card is activ" for some seconds and then deactivate
     IEnumerator ShowSuccess()
     {
-        Reward_OpenPanel3.SetActive(true);
+        reward_OpenPanel3.SetActive(true);
         yield return new WaitForSeconds(2f);
-        Reward_OpenPanel3.SetActive(false);
-       // shownMinimizedKeycard004.SetActive(false);//for deactivating minimized panel keycard04(key card obtained) when answer is correct
-       // keycardIsActive_minimized004.SetActive(true);//to activate minimized panel "key card is activ" when answer is correct
+        reward_OpenPanel3.SetActive(false);
+        // shownMinimizedKeycard004.SetActive(false);//for deactivating minimized panel keycard04(key card obtained) when answer is correct
+        // keycardIsActive_minimized004.SetActive(true);//to activate minimized panel "key card is activ" when answer is correct
     }
 
 
@@ -257,8 +266,8 @@ public class Laptop_GameScript_3 : MonoBehaviour {
             if (laptop_myNumber.text == currentAnswer3)
             {
 
-                Laptop_OpenPanel3.SetActive(false);
-                Laptop_OpenPanel3 = null;
+                laptop_OpenPanel3.SetActive(false);
+                laptop_OpenPanel3 = null;
                 correct = true;
 
             }
@@ -268,23 +277,23 @@ public class Laptop_GameScript_3 : MonoBehaviour {
                 //laptop_myNumber.text = "wrong answer";
                 wrongAnswer.SetActive(true);
                 playerStatus.GetDamage(damage);
-                healthbar_blur.showBlur();
+                healthbar_blur.ShowBlur();
             }
 
         }
 
-        if (correct && Laptop_isInsideTrigger)
+        if (correct && laptop_isInsideTrigger)
         {
-            Reward_OpenPanel3.SetActive(true);
+            reward_OpenPanel3.SetActive(true);
             shownMinimizedKeycard004.SetActive(false);//for deactivating panel_keycard04_minimized when answer is correct
             keycardIsActive_minimized004.SetActive(true);//to activate panel keycardIsActive_minimized when answer is correct
             WeaponSafe_CorridorScript.keycardIsActiv = true;// key card is now activ for the door to open
-            WeaponSafe_CorridorScript.KeyCard_To_Laptop = false;// dont show key needs to be activated since the answer is correct
+            WeaponSafe_CorridorScript.keyCard_To_Laptop = false;// dont show key needs to be activated since the answer is correct
             _animator.SetBool("Laptop_on", false);
         }
-        if (correct && Laptop_isInsideTrigger == false)
+        if (correct && laptop_isInsideTrigger == false)
         {
-            Reward_OpenPanel3.SetActive(false);
+            reward_OpenPanel3.SetActive(false);
             shownMinimizedKeycard004.SetActive(false);//for deactivating panel_keycard04_minimized when answer is correct
             keycardIsActive_minimized004.SetActive(true);//to activate panel keycardIsActive_minimized when answer is correct
 

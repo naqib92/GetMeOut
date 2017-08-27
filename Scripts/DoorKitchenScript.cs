@@ -4,9 +4,9 @@ using System.Collections;
 public class DoorKitchenScript : MonoBehaviour {
 
     public Animator _animator;
-    public GameObject OpenPanel = null;
+    public GameObject openPanel = null;
  
-    public GameObject OpenPanel_go_Do_Activation = null;
+    public GameObject openPanel_go_Do_Activation = null;
 
     public GameObject destroyKeycardMinimalized003;// important! using Tag to destroy
     public GameObject destroyKeycardIsActiveMinimalized003;// important! using Tag to destroy
@@ -14,14 +14,14 @@ public class DoorKitchenScript : MonoBehaviour {
 
     public bool inTrigger;
 
-    public string OpenText = "Insert KeyCard to Open door";
-    public string CloseText = "";
+    public string openText = "Insert KeyCard to Open door";
+    public string closeText = "";
 
     private bool _isOpen = false;
 
 
 
-    public static bool KeyCard_To_Laptop; // key card is now activ for the door to open from Laptop_GameScript2.cs => DoorKitchenScript.keycardIsActiv = true
+    public static bool keyCard_To_Laptop; // key card is now activ for the door to open from Laptop_GameScript2.cs => DoorKitchenScript.keycardIsActiv = true
     public static bool keycardIsActiv;// dont show key needs to be activated since the answer is correct from Laptop_GameScript3.cs => DoorKitchenScript.KeyCard_To_Laptop = false
 
     // Use this for initialization
@@ -38,17 +38,17 @@ public class DoorKitchenScript : MonoBehaviour {
     {
         get
         {
-            return OpenPanel.activeInHierarchy;
+            return openPanel.activeInHierarchy;
         }
     }
 
     // for updating the kitchen door panel text
     private void UpdatePanelText()
     {
-        UnityEngine.UI.Text panelText = OpenPanel.transform.FindChild("Text").GetComponent<UnityEngine.UI.Text>();
+        UnityEngine.UI.Text panelText = openPanel.transform.FindChild("Text").GetComponent<UnityEngine.UI.Text>();
         if (panelText != null)
         {
-            panelText.text = _isOpen ? CloseText : OpenText;//if _isOpen is true return CloseText or else return openText
+            panelText.text = _isOpen ? closeText : openText;//if _isOpen is true return closeText or else return openText
         }
     }
 
@@ -65,14 +65,14 @@ public class DoorKitchenScript : MonoBehaviour {
                 UpdatePanelText();
                 _animator.SetBool("KitchenSlot_showError", true);
 
-                if (KeyCard_To_Laptop == true)//if key card is set to true from Laptop_GameScript2.KeyCard_To_Laptop
+                if (keyCard_To_Laptop == true)//if key card is set to true from Laptop_GameScript2.KeyCard_To_Laptop
                 {
-                    OpenPanel_go_Do_Activation.SetActive(true);
+                    openPanel_go_Do_Activation.SetActive(true);
 
                 }
                 else
                 {
-                    OpenPanel.SetActive(true);
+                    openPanel.SetActive(true);
 
                 }
             }
@@ -84,13 +84,13 @@ public class DoorKitchenScript : MonoBehaviour {
             inTrigger = false;
             _animator.SetBool("KitchenSlot_showError", false);
 
-            if (KeyCard_To_Laptop == true)
+            if (keyCard_To_Laptop == true)
             {
-                OpenPanel_go_Do_Activation.SetActive(false);
+                openPanel_go_Do_Activation.SetActive(false);
             }
             else
             {
-                OpenPanel.SetActive(false);
+                openPanel.SetActive(false);
             }
         }
 
@@ -107,10 +107,10 @@ public class DoorKitchenScript : MonoBehaviour {
                 if (keycardIsActiv == true)
                 {
                     _animator.SetBool("openKitchenDoor", true);
-                    OpenPanel.SetActive(false);// panel is invincible
+                    openPanel.SetActive(false);// panel is invincible
                     _animator.SetBool("KitchenSlot_showNoError", true);
-                    OpenPanel = null;
-                    Laptop_GameScript_2.KeyCard_To_Laptop = false;// dont show the game on the laptop
+                    openPanel = null;
+                    Laptop_GameScript_2.keyCard_To_Laptop = false;// dont show the game on the laptop
                 }
 
             }

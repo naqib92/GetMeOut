@@ -3,35 +3,36 @@ using System.Collections;
 
 public class KeyCardBedroomScript : MonoBehaviour {
 
-    public bool inTrigger;
-    public GameObject OpenPanel = null;
+
+    public GameObject openPanel = null;
     public GameObject shownMinimizedKeycard = null;
     public Camera fpsCam;
 
-    public string OpenText = "Take key card";
-    public string CloseText = "";
 
+
+    public string openText = "Take key card";
+    public string closeText = "";
+    public bool inTrigger;
     private bool _isOpen = false;
 
-
-
+   
 
     // for checking if the key card panel is activ
     private bool IsOpenPanelActive
     {
         get
         {
-            return OpenPanel.activeInHierarchy;
+            return openPanel.activeInHierarchy;
         }
     }
 
     // for updating the key card panel text
     private void UpdatePanelText()
     {
-        UnityEngine.UI.Text panelText = OpenPanel.transform.FindChild("Text").GetComponent<UnityEngine.UI.Text>();
+        UnityEngine.UI.Text panelText = openPanel.transform.FindChild("Text").GetComponent<UnityEngine.UI.Text>();
         if (panelText != null)
         {
-            panelText.text = _isOpen ? CloseText : OpenText;//if _isOpen is true return CloseText or else return openText
+            panelText.text = _isOpen ? closeText : openText;//if _isOpen is true return closeText or else return openText
         }
     }
 
@@ -46,7 +47,7 @@ public class KeyCardBedroomScript : MonoBehaviour {
             {
                 inTrigger = true;
                 UpdatePanelText();
-                OpenPanel.SetActive(true);
+                openPanel.SetActive(true);
 
             }
 
@@ -54,7 +55,7 @@ public class KeyCardBedroomScript : MonoBehaviour {
         }
         else
         {
-            OpenPanel.SetActive(false);
+            openPanel.SetActive(false);
             inTrigger = false;
 
         }
@@ -71,8 +72,8 @@ public class KeyCardBedroomScript : MonoBehaviour {
             if (Input.GetMouseButtonDown(1))
             {
                 DoorBedroomScript.keyCardBedroom = true;
-                Destroy(this.gameObject);
-                OpenPanel.SetActive(false);// panel is invincible
+                Destroy(GameObject.FindWithTag("Keycard_Bedroom"));
+                openPanel.SetActive(false);// panel is invincible
                 shownMinimizedKeycard.SetActive(true);
             }
         }

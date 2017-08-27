@@ -1,17 +1,19 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class WeaponInSafeScript : MonoBehaviour {
+public class WeaponInSafeScript : MonoBehaviour
+{
 
-    public Animator _animator;   
-    public GameObject OpenPanel = null;
-    public GameObject OutsideDoorIsOpened_Panel;
-    public GameObject Weapon;
-    public GameObject Crosshair;
-    public GameObject WeaponIcon;
+    public Animator _animator;
+    public GameObject openPanel = null;
+    public GameObject outsideDoorIsOpened_Panel;
+    public GameObject weapon;
+   // public GameObject weaponInSafe;
+    public GameObject crosshair;
+    public GameObject weaponIcon;
     public Camera fpsCam;
-    public string OpenText = "Take item";
-    public string CloseText = "";
+    public string openText = "Take item";
+    public string closeText = "";
     public bool inTrigger;
     private bool _isOpen = false;
 
@@ -26,17 +28,17 @@ public class WeaponInSafeScript : MonoBehaviour {
     {
         get
         {
-            return OpenPanel.activeInHierarchy;
+            return openPanel.activeInHierarchy;
         }
     }
 
 
     private void UpdatePanelText()
     {
-        UnityEngine.UI.Text panelText = OpenPanel.transform.FindChild("Text").GetComponent<UnityEngine.UI.Text>();
+        UnityEngine.UI.Text panelText = openPanel.transform.FindChild("Text").GetComponent<UnityEngine.UI.Text>();
         if (panelText != null)
         {
-            panelText.text = _isOpen ? CloseText : OpenText;//if _isOpen is true return CloseText or else return openText
+            panelText.text = _isOpen ? closeText : openText;//if _isOpen is true return CloseText or else return openText
         }
     }
 
@@ -46,18 +48,18 @@ public class WeaponInSafeScript : MonoBehaviour {
         RaycastHit hit;
         if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, 2))
         {
-            if (hit.collider.gameObject.tag == "weaponInSafe" )
+            if (hit.collider.gameObject.tag == "weaponInSafe")
             {
                 inTrigger = true;
                 UpdatePanelText();
-                OpenPanel.SetActive(true);// panel can now being seen
+                openPanel.SetActive(true);// panel can now being seen
             }
 
 
         }
         else
         {
-            OpenPanel.SetActive(false);// panel is invincible
+            openPanel.SetActive(false);// panel is invincible
             inTrigger = false;
         }
 
@@ -69,11 +71,13 @@ public class WeaponInSafeScript : MonoBehaviour {
             {
                 DoorOutsideScript.weaponObtained = true;
                 Destroy(this.gameObject);// destroy the gameobject that the script refers to
-                OpenPanel.SetActive(false);// panel is invincible
-                OutsideDoorIsOpened_Panel.SetActive(true);// "outside door is now opened"
-                Weapon.SetActive(true);// display weapon
-                WeaponIcon.SetActive(true);// display weaponIcon
-                Crosshair.SetActive(true);
+                //weaponInSafe.SetActive(false);
+                openPanel.SetActive(false);// panel is invincible
+                outsideDoorIsOpened_Panel.SetActive(true);// "outside door is now opened"
+                weapon.SetActive(true);// display weapon
+                weaponIcon.SetActive(true);// display weaponIcon
+                crosshair.SetActive(true);
+                EnemyAIScript.isOutside = true;
             }
         }
 

@@ -4,14 +4,14 @@ using System.Collections;
 public class DoorBathroomScript : MonoBehaviour {
 
     public Animator _animator;
-    public GameObject OpenPanel = null;
+    public GameObject openPanel = null;
     public GameObject destroyKeycardMinimalized002;// for destroying the panel keycard obtainded
     public Camera fpsCam;
 
     public bool inTrigger;
 
-    public string OpenText = "Insert KeyCard to Open door";
-    public string CloseText = "";
+    public string openText = "Insert KeyCard to Open door";
+    public string closeText = "";
 
     private bool _isOpen = false;
 
@@ -31,17 +31,17 @@ public class DoorBathroomScript : MonoBehaviour {
     {
         get
         {
-            return OpenPanel.activeInHierarchy;
+            return openPanel.activeInHierarchy;
         }
     }
 
     // for updating the bathroom door panel text 
     private void UpdatePanelText()
     {
-        UnityEngine.UI.Text panelText = OpenPanel.transform.FindChild("Text").GetComponent<UnityEngine.UI.Text>();
+        UnityEngine.UI.Text panelText = openPanel.transform.FindChild("Text").GetComponent<UnityEngine.UI.Text>();
         if (panelText != null)
         {
-            panelText.text = _isOpen ? CloseText : OpenText;//if _isOpen is true return CloseText or else return openText
+            panelText.text = _isOpen ? closeText : openText;//if _isOpen is true return closeText or else return openText
         }
     }
 
@@ -56,7 +56,7 @@ public class DoorBathroomScript : MonoBehaviour {
             {
                 inTrigger = true;
                 UpdatePanelText();
-                OpenPanel.SetActive(true);
+                openPanel.SetActive(true);
                 _animator.SetBool("BathroomSlot_showError", true);
             }
 
@@ -65,7 +65,7 @@ public class DoorBathroomScript : MonoBehaviour {
         else
         {
             inTrigger = false;
-            OpenPanel.SetActive(false);
+            openPanel.SetActive(false);
             _animator.SetBool("BathroomSlot_showError", false);
         }
     }
@@ -82,9 +82,9 @@ public class DoorBathroomScript : MonoBehaviour {
                 if (Input.GetMouseButtonDown(1))
                 {
                     _animator.SetBool("OpenDoorBathroom", true);
-                    OpenPanel.SetActive(false);// panel is invincible
+                    openPanel.SetActive(false);// panel is invincible
                     _animator.SetBool("BathroomSlot_showNoError", true);
-                    OpenPanel = null;
+                    openPanel = null;
 
                 }
 

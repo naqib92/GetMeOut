@@ -5,10 +5,10 @@ using UnityEngine.UI;
 public class Keypad_LivingRoom_SAFE_Script : MonoBehaviour
 {
 
-    public GameObject OpenPanel_Keypad;
+    public GameObject openPanel_Keypad;
     public Animator _animator;
     public GameObject destroyPasswordMinimalized;//using tag to destroy
-    public GameObject KeycardLivi_ToBathroom;
+    public Collider keycard;
     
     public Camera fpsCam;
     public string currentPassword_LivingRoom = "456";
@@ -46,7 +46,7 @@ public class Keypad_LivingRoom_SAFE_Script : MonoBehaviour
             if (hit.collider.gameObject.tag == "Safe_Livingroom")
             {
                 inTrigger = true;
-                OpenPanel_Keypad.SetActive(true);// panel can now being seen
+                openPanel_Keypad.SetActive(true);// panel can now being seen
                 
             }
             
@@ -56,7 +56,7 @@ public class Keypad_LivingRoom_SAFE_Script : MonoBehaviour
         {
             inTrigger = false;
             keyPadScreen = false;
-            OpenPanel_Keypad.SetActive(false);// panel can now being seen
+            openPanel_Keypad.SetActive(false);// panel can now being seen
            
         }
 
@@ -147,11 +147,11 @@ public class Keypad_LivingRoom_SAFE_Script : MonoBehaviour
         if (doorOpended)
         {
             _animator.SetBool("Safe_DoorOpen_Livingroom", true);
-            OpenPanel_Keypad.SetActive(false);
+            openPanel_Keypad.SetActive(false);
             inTrigger = false;
             keyPadScreen = false;
             Destroy(destroyPasswordMinimalized);
-            KeycardLivi_ToBathroom.SetActive(true);
+            keycard.enabled = true;
         }
 
     }

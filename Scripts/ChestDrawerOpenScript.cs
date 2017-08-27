@@ -6,14 +6,14 @@ public class ChestDrawerOpenScript : MonoBehaviour
 {
 
     public Animator _animator;
-    public GameObject Paper;//paper.png
-    public GameObject Panel_Chestdrawer = null;
-    public GameObject OpenPanel_ToReadPaper;
+    public GameObject paper;//paper.png
+    public GameObject panel_Chestdrawer = null;
+    public GameObject openPanel_ToReadPaper;
     public Camera fpsCam;
 
     private bool _isInsideTrigger = false;
-    public string OpenText = "open drawer";
-    public string CloseText = "";
+    public string openText = "open drawer";
+    public string closeText = "";
 
     private bool _isOpen = false;
 
@@ -26,7 +26,7 @@ public class ChestDrawerOpenScript : MonoBehaviour
     void Start()
     {
         _animator = GetComponent<Animator>();
-        Paper.SetActive(false);
+        paper.SetActive(false);
         time = Time.time;
 
     }
@@ -38,17 +38,17 @@ public class ChestDrawerOpenScript : MonoBehaviour
     {
         get
         {
-            return Panel_Chestdrawer.activeInHierarchy;
+            return panel_Chestdrawer.activeInHierarchy;
         }
     }
 
     // for updating the drawer panel text 
     private void UpdatePanelText()
     {
-        UnityEngine.UI.Text panelText = Panel_Chestdrawer.transform.FindChild("Text").GetComponent<UnityEngine.UI.Text>();
+        UnityEngine.UI.Text panelText = panel_Chestdrawer.transform.FindChild("Text").GetComponent<UnityEngine.UI.Text>();
         if (panelText != null)
         {
-            panelText.text = _isOpen ? CloseText : OpenText;//if _isOpen is true return CloseText or else return openText
+            panelText.text = _isOpen ? closeText : openText;//if _isOpen is true return closeText or else return openText
         }
     }
 
@@ -64,11 +64,11 @@ public class ChestDrawerOpenScript : MonoBehaviour
             {
                 _isInsideTrigger = true;
                 UpdatePanelText();
-                Panel_Chestdrawer.SetActive(true);
+                panel_Chestdrawer.SetActive(true);
             }
             if (hit.collider.gameObject.tag == "safe_Bedroom")// in case raycast hits the bedroom Safe then deactivate the chestdrawer or paper panel
             {
-                Panel_Chestdrawer.SetActive(false);
+                panel_Chestdrawer.SetActive(false);
             }
 
 
@@ -76,8 +76,8 @@ public class ChestDrawerOpenScript : MonoBehaviour
         else
         {
             _isInsideTrigger = false;
-            Panel_Chestdrawer.SetActive(false);
-            OpenPanel_ToReadPaper.SetActive(false);
+            panel_Chestdrawer.SetActive(false);
+            openPanel_ToReadPaper.SetActive(false);
 
         }
     }
@@ -100,24 +100,24 @@ public class ChestDrawerOpenScript : MonoBehaviour
         }
         if (_animator.GetBool("open") == true)
         {
-            if (Time.time >= time + 0.7f)// time starts running when the drawer is opened. if time reaches 0.7sec then do the code under
+            if (Time.time >= time + 0.7f)// time starts running when the drawer is opened. if time reaches 0.7sec then show paper
             {
 
-                OpenPanel_ToReadPaper.SetActive(true);
-                Paper.SetActive(true);
+                openPanel_ToReadPaper.SetActive(true);
+                paper.SetActive(true);
 
             }
         }
         else// if panel is not opened put time to 0
         {
-            OpenPanel_ToReadPaper.SetActive(false);
-            Paper.SetActive(false);
+            openPanel_ToReadPaper.SetActive(false);
+            paper.SetActive(false);
             time = Time.time;
 
         }
         if (_isInsideTrigger == false)
         {
-            OpenPanel_ToReadPaper.SetActive(false);
+            openPanel_ToReadPaper.SetActive(false);
         }
 
     }

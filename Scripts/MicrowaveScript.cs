@@ -5,15 +5,15 @@ public class MicrowaveScript : MonoBehaviour {
 
 
     public Animator _animator;
-    public GameObject OpenPanel = null;
+    public GameObject openPanel = null;
 
-    public Collider MicrowaveCollider;
+    public Collider microwaveCollider;
     public Camera fpsCam;
 
     private bool _isInsideTrigger = false;
 
-    public string OpenText = "Press the left mouse button to open slider";
-    public string CloseText = "Press the left mouse button to close slider";
+    public string openText = "Press the left mouse button to open slider";
+    public string closeText = "Press the left mouse button to close slider";
 
     private bool _isOpen = false;
     
@@ -37,17 +37,17 @@ public class MicrowaveScript : MonoBehaviour {
     {
         get
         {
-            return OpenPanel.activeInHierarchy;
+            return openPanel.activeInHierarchy;
         }
     }
 
     // for updating the microwave panel text
     private void UpdatePanelText()
     {
-        UnityEngine.UI.Text panelText = OpenPanel.transform.FindChild("Text").GetComponent<UnityEngine.UI.Text>();
+        UnityEngine.UI.Text panelText = openPanel.transform.FindChild("Text").GetComponent<UnityEngine.UI.Text>();
         if (panelText != null)
         {
-            panelText.text = _isOpen ? CloseText : OpenText;//if _isOpen is true return CloseText or else return openText
+            panelText.text = _isOpen ? closeText : openText;//if _isOpen is true return closeText or else return openText
         }
     }
 
@@ -62,7 +62,7 @@ public class MicrowaveScript : MonoBehaviour {
             {
                 _isInsideTrigger = true;
                 UpdatePanelText();
-                OpenPanel.SetActive(true);
+                openPanel.SetActive(true);
             }
 
 
@@ -70,7 +70,7 @@ public class MicrowaveScript : MonoBehaviour {
         else
         {
             _isInsideTrigger = false;
-            OpenPanel.SetActive(false);
+            openPanel.SetActive(false);
         }
 
     }
@@ -87,8 +87,8 @@ public class MicrowaveScript : MonoBehaviour {
                 // UpdatePanelText();
 
                 _animator.SetBool("open_Microwave", true);
-                OpenPanel.SetActive(false);
-                MicrowaveCollider.enabled = false;
+                openPanel.SetActive(false);
+                microwaveCollider.enabled = false;
             }
         }
 

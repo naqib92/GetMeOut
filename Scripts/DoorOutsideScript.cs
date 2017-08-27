@@ -9,8 +9,8 @@ public class DoorOutsideScript : MonoBehaviour {
 
     public bool inTrigger;
 
-    public string OpenText = "access denied";
-    public string CloseText = "";
+    public string openText = "access denied";
+    public string closeText = "";
 
     private bool _isOpen = false;
     public static bool weaponObtained = false;
@@ -36,7 +36,7 @@ public class DoorOutsideScript : MonoBehaviour {
         UnityEngine.UI.Text panelText = OpenPanel.transform.FindChild("Text").GetComponent<UnityEngine.UI.Text>();
         if (panelText != null)
         {
-            panelText.text = _isOpen ? CloseText : OpenText;//if _isOpen is true return CloseText or else return openText
+            panelText.text = _isOpen ? closeText : openText;//if _isOpen is true return closeText or else return openText
         }
     }
 

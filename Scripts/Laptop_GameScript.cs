@@ -8,21 +8,34 @@ public class Laptop_GameScript : MonoBehaviour {
     // q: what is binary 010
 
     private Animator _animator;
-    public GameObject Laptop_OpenPanel;
-    public GameObject Reward_OpenPanel;
-    public GameObject passwordShownMinimalized;
-    public GameObject wrongAnswer;
-    public GameObject enterA_Number;
     private PlayerStatusScript playerStatus; //playerStatus.GetDamage(damage);
-    private HealthBar_BlurScript healthbar_blur;
-    public Camera fpsCam;
+    private HealthBar_BlurScript healthbar_blur;//off on healthbar blur when damage is taken
 
-    private bool Laptop_isInsideTrigger = false;
+    public GameObject laptop_OpenPanel; //open panel when player is near laptop
+    public GameObject reward_OpenPanel; // open panel if anwser is correct
+    public GameObject passwordShownMinimalized; //show password if answer is correct
+
+    [Space]
+    [Space]
+    public GameObject wrongAnswer;//if anwser is wrong display "wrong answer"
+    public GameObject enterA_Number;//if input field is empty and player presses enter display "type in a number"
+
+    [Space]
+    [Space]
+    public Camera fpsCam;// fpscam for raycast
+
+    [Space]
+    [Space]
+    private bool correct = false;
+    private bool laptop_isInsideTrigger = false;
     public string currentAnswer = "6";
-    public bool correct = false;
     public static bool putOffPanel_Game1;// in case this gamescript wasnt played then dont show the panel 
-    public int damage = 1;
+    [Space]
+    [Space]
+    private float damage = 0.01f;// 0.01 * 100 = 1 damage unit
 
+    [Space]
+    [Space]
     //keypad input
     string laptop_number = null;
     public InputField laptop_myNumber = null;
@@ -51,18 +64,18 @@ public class Laptop_GameScript : MonoBehaviour {
             {
                 if (putOffPanel_Game1 == true)// in case this gamescript wasnt played then dont show the panel
                 {
-                    Laptop_OpenPanel.SetActive(false);
+                    laptop_OpenPanel.SetActive(false);
                 }
                 else
                 {
-                    Laptop_isInsideTrigger = true;
-                    Laptop_OpenPanel.SetActive(true);
+                    laptop_isInsideTrigger = true;
+                    laptop_OpenPanel.SetActive(true);
                     _animator.SetBool("Laptop_on", true);
                 }
             }
             if (hit.collider.gameObject.tag == "Book_binary")//in case raycast hits the open book then deactivate the laptop panel
             {
-                Laptop_OpenPanel.SetActive(false);
+                laptop_OpenPanel.SetActive(false);
             }
 
 
@@ -70,8 +83,8 @@ public class Laptop_GameScript : MonoBehaviour {
         else
         {   
             
-            Laptop_isInsideTrigger = false;
-            Laptop_OpenPanel.SetActive(false);
+            laptop_isInsideTrigger = false;
+            laptop_OpenPanel.SetActive(false);
             _animator.SetBool("Laptop_on", false);
             laptop_myNumber.text = "";//reset input field when raycast looks away from collider
             wrongAnswer.SetActive(false);// deactivate wrong answer when raycast looks away from collider
@@ -85,7 +98,7 @@ public class Laptop_GameScript : MonoBehaviour {
     void InsideTrigger()
     {
         
-      if (Laptop_isInsideTrigger)
+      if (laptop_isInsideTrigger)
         {
          
             if (Input.GetKeyDown(KeyCode.Alpha0) || Input.GetKeyDown(KeyCode.Keypad0))
@@ -168,8 +181,8 @@ public class Laptop_GameScript : MonoBehaviour {
             {
                 if (laptop_myNumber.text == currentAnswer)
                 {
-                    Laptop_OpenPanel.SetActive(false);
-                    Laptop_OpenPanel = null;
+                    laptop_OpenPanel.SetActive(false);
+                    laptop_OpenPanel = null;
                     correct = true;
                     _animator.SetBool("Laptop_on", false);
                 }
@@ -183,7 +196,7 @@ public class Laptop_GameScript : MonoBehaviour {
                     //laptop_myNumber.text = "wrong answer";
                     wrongAnswer.SetActive(true);
                     playerStatus.GetDamage(damage);
-                    healthbar_blur.showBlur();
+                    healthbar_blur.ShowBlur();
                 }
 
             }
@@ -193,7 +206,7 @@ public class Laptop_GameScript : MonoBehaviour {
         }
 
 
-        if (correct && Laptop_isInsideTrigger)
+        if (correct && laptop_isInsideTrigger)
         {
             StartCoroutine(ShowSuccess());
         }
@@ -203,9 +216,9 @@ public class Laptop_GameScript : MonoBehaviour {
     //show the the password panel for some seconds and then deactivate and set the mini password panel to true
     IEnumerator ShowSuccess()
     {
-        Reward_OpenPanel.SetActive(true);
+        reward_OpenPanel.SetActive(true);
         yield return new WaitForSeconds(2f);
-        Reward_OpenPanel.SetActive(false);
+        reward_OpenPanel.SetActive(false);
         passwordShownMinimalized.SetActive(true);
     }
 
@@ -250,8 +263,8 @@ public class Laptop_GameScript : MonoBehaviour {
             if (laptop_myNumber.text == currentAnswer)
             {
 
-                Laptop_OpenPanel.SetActive(false);
-                Laptop_OpenPanel = null;
+                laptop_OpenPanel.SetActive(false);
+                laptop_OpenPanel = null;
                 correct = true;
                 _animator.SetBool("Laptop_on", false);
             }
@@ -261,20 +274,20 @@ public class Laptop_GameScript : MonoBehaviour {
                 //laptop_myNumber.text = "wrong answer";
                 wrongAnswer.SetActive(true);
                 playerStatus.GetDamage(damage);
-                healthbar_blur.showBlur();
+                healthbar_blur.ShowBlur();
             }
             
         }
 
 
-        if (correct && Laptop_isInsideTrigger)
+        if (correct && laptop_isInsideTrigger)
         {
-            Reward_OpenPanel.SetActive(true);
+            reward_OpenPanel.SetActive(true);
             
         }
-        if (correct && Laptop_isInsideTrigger == false)
+        if (correct && laptop_isInsideTrigger == false)
         {
-            Reward_OpenPanel.SetActive(false);
+            reward_OpenPanel.SetActive(false);
             passwordShownMinimalized.SetActive(true); 
         }
 

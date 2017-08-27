@@ -7,14 +7,14 @@ public class DoorBedroomScript : MonoBehaviour
 {
 
     public Animator _animator;
-    public GameObject OpenPanel = null;
+    public GameObject openPanel = null;
     public GameObject destroyKeycardMinimalized001;// important! using Tag to destroy // for destroying the panel keycard obtainded
     public Camera fpsCam;
 
     public bool inTrigger;
 
-    public string OpenText = "Insert KeyCard to Open door";
-    public string CloseText = "";
+    public string openText = "Insert KeyCard to Open door";
+    public string closeText = "";
 
     private bool _isOpen = false;
 
@@ -35,17 +35,17 @@ public class DoorBedroomScript : MonoBehaviour
     {
         get
         {
-            return OpenPanel.activeInHierarchy;
+            return openPanel.activeInHierarchy;
         }
     }
 
     // for updating the bedroom door panel text 
     private void UpdatePanelText()
     {
-        UnityEngine.UI.Text panelText = OpenPanel.transform.FindChild("Text").GetComponent<UnityEngine.UI.Text>();
+        UnityEngine.UI.Text panelText = openPanel.transform.FindChild("Text").GetComponent<UnityEngine.UI.Text>();
         if (panelText != null)
         {
-            panelText.text = _isOpen ? CloseText : OpenText;//if _isOpen is true return CloseText or else return openText
+            panelText.text = _isOpen ? closeText : openText;//if _isOpen is true return closeText or else return openText
         }
     }
 
@@ -61,7 +61,7 @@ public class DoorBedroomScript : MonoBehaviour
                 _animator.SetBool("BedroomSlot_showError", true);
                 inTrigger = true;
                 UpdatePanelText();
-                OpenPanel.SetActive(true);
+                openPanel.SetActive(true);
             }
 
 
@@ -70,7 +70,7 @@ public class DoorBedroomScript : MonoBehaviour
         {
             _animator.SetBool("BedroomSlot_showError", false);
             inTrigger = false;
-            OpenPanel.SetActive(false);
+            openPanel.SetActive(false);
         }
 
     }
@@ -86,8 +86,8 @@ public class DoorBedroomScript : MonoBehaviour
                 {
                     _animator.SetBool("BedroomSlot_showNoError", true);
                     _animator.SetBool("OpenDoorBedroom", true);
-                    OpenPanel.SetActive(false);
-                    OpenPanel = null;
+                    openPanel.SetActive(false);
+                    openPanel = null;
 
                 }
 

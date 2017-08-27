@@ -5,12 +5,13 @@ public class KeyCardLivingroomScript : MonoBehaviour
 {
 
     public bool inTrigger;
-    public GameObject OpenPanel = null;
+    public GameObject openPanel = null;
     public GameObject shownMinimizedKeycard;
     public Camera fpsCam;
+    public GameObject keycard;
 
-    public string OpenText = "Take key card";
-    public string CloseText = "";
+    public string openText = "Take key card";
+    public string closeText = "";
 
     private bool _isOpen = false;
 
@@ -20,17 +21,17 @@ public class KeyCardLivingroomScript : MonoBehaviour
     {
         get
         {
-            return OpenPanel.activeInHierarchy;
+            return openPanel.activeInHierarchy;
         }
     }
 
     // for updating the key card panel text
     private void UpdatePanelText()
     {
-        UnityEngine.UI.Text panelText = OpenPanel.transform.FindChild("Text").GetComponent<UnityEngine.UI.Text>();
+        UnityEngine.UI.Text panelText = openPanel.transform.FindChild("Text").GetComponent<UnityEngine.UI.Text>();
         if (panelText != null)
         {
-            panelText.text = _isOpen ? CloseText : OpenText;//if _isOpen is true return CloseText or else return openText
+            panelText.text = _isOpen ? closeText : openText;//if _isOpen is true return closeText or else return openText
         }
     }
     // if raycast hits the key card collider, set _isInsideTrigger to true else set to fals
@@ -43,14 +44,14 @@ public class KeyCardLivingroomScript : MonoBehaviour
             {
                 inTrigger = true;
                 UpdatePanelText();
-                OpenPanel.SetActive(true);
+                openPanel.SetActive(true);
             }
 
 
         }
         else
         {
-            OpenPanel.SetActive(false);
+            openPanel.SetActive(false);
             inTrigger = false;
         }
 
@@ -64,8 +65,8 @@ public class KeyCardLivingroomScript : MonoBehaviour
             if (Input.GetMouseButtonDown(1))
             {
                 DoorBathroomScript.keyCard_To_Bathroom = true;
-                Destroy(this.gameObject);
-                OpenPanel.SetActive(false);
+                keycard.SetActive(false);
+                openPanel.SetActive(false);
                 shownMinimizedKeycard.SetActive(true);
             }
         }

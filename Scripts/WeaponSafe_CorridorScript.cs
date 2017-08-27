@@ -1,12 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-public class WeaponSafe_CorridorScript : MonoBehaviour {
+public class WeaponSafe_CorridorScript : MonoBehaviour
+{
 
     public Animator _animator;
-    public GameObject OpenPanel = null;
+    public GameObject openPanel = null;
 
-    public GameObject OpenPanel_go_Do_Activation = null;
+    public GameObject openPanel_go_Do_Activation = null;
     public GameObject destroyKeycardMinimalized004;// important! using Tag to destroy
     public GameObject destroyKeycardIsActiveMinimalized004;// important! using Tag to destroy
     public Collider weaponInSafe_Collider; // weaponInSafe and weapon_slot_Screen Gameobject needs to be assigned
@@ -14,14 +15,14 @@ public class WeaponSafe_CorridorScript : MonoBehaviour {
 
     public bool inTrigger;
 
-    public string OpenText = "Insert keycard to open";
-    public string CloseText = "";
+    public string openText = "Insert keycard to open";
+    public string closeText = "";
 
     private bool _isOpen = false;
 
 
 
-    public static bool KeyCard_To_Laptop; // key card is now activ for the door to open from Laptop_GameScript3.cs => WeaponCorridorScript.keycardIsActiv = true
+    public static bool keyCard_To_Laptop; // key card is now activ for the door to open from Laptop_GameScript3.cs => WeaponCorridorScript.keycardIsActiv = true
     public static bool keycardIsActiv;// dont show key needs to be activated since the answer is correct from Laptop_GameScript3.cs => WeaponCorridorScript.KeyCard_To_Laptop = false
 
 
@@ -34,7 +35,7 @@ public class WeaponSafe_CorridorScript : MonoBehaviour {
     {
         _animator = GetComponent<Animator>();
         weaponInSafe_Collider.enabled = false;
-        
+
     }
 
     // for checking if the panel is activ
@@ -42,17 +43,17 @@ public class WeaponSafe_CorridorScript : MonoBehaviour {
     {
         get
         {
-            return OpenPanel.activeInHierarchy;
+            return openPanel.activeInHierarchy;
         }
     }
 
     // for updating panel text 
     private void UpdatePanelText()
     {
-        UnityEngine.UI.Text panelText = OpenPanel.transform.FindChild("Text").GetComponent<UnityEngine.UI.Text>();
+        UnityEngine.UI.Text panelText = openPanel.transform.FindChild("Text").GetComponent<UnityEngine.UI.Text>();
         if (panelText != null)
         {
-            panelText.text = _isOpen ? CloseText : OpenText;//if _isOpen is true return CloseText or else return openText
+            panelText.text = _isOpen ? closeText : openText;//if _isOpen is true return CloseText or else return openText
         }
     }
 
@@ -60,7 +61,7 @@ public class WeaponSafe_CorridorScript : MonoBehaviour {
     IEnumerator openSafe()
     {
         yield return new WaitForSeconds(1);
-        weaponInSafe_Collider.enabled = true; 
+        weaponInSafe_Collider.enabled = true;
     }
 
 
@@ -75,13 +76,13 @@ public class WeaponSafe_CorridorScript : MonoBehaviour {
                 inTrigger = true;
                 UpdatePanelText();
                 _animator.SetBool("weaponSlot_showError", true);
-                if (KeyCard_To_Laptop == true)//if key card is set to true from Laptop_GameScript3.KeyCard_To_Laptop
+                if (keyCard_To_Laptop == true)//if key card is set to true from Laptop_GameScript3.KeyCard_To_Laptop
                 {
-                    OpenPanel_go_Do_Activation.SetActive(true);
+                    openPanel_go_Do_Activation.SetActive(true);
                 }
                 else
                 {
-                    OpenPanel.SetActive(true);// panel can now being seen
+                    openPanel.SetActive(true);// panel can now being seen
                 }
             }
 
@@ -91,13 +92,13 @@ public class WeaponSafe_CorridorScript : MonoBehaviour {
         {
             inTrigger = false;
             _animator.SetBool("weaponSlot_showError", false);
-            if (KeyCard_To_Laptop == true)//if player has the keycard deactivate the go do activation panel
+            if (keyCard_To_Laptop == true)//if player has the keycard deactivate the go do activation panel
             {
-                OpenPanel_go_Do_Activation.SetActive(false);
+                openPanel_go_Do_Activation.SetActive(false);
             }
             else
             {
-                OpenPanel.SetActive(false);// panel is invincible
+                openPanel.SetActive(false);// panel is invincible
             }
         }
 
@@ -111,16 +112,17 @@ public class WeaponSafe_CorridorScript : MonoBehaviour {
             if (Input.GetMouseButtonDown(1))
             {
 
-                // if (keycardIsActiv == true)
-                if (true)
+               
+               //  if (true)
+                if (keycardIsActiv == true)
                 {
                     _animator.SetBool("openWeaponSafe", true);// open the safe
                     StartCoroutine(openSafe());// wait for a certain amount of time till safe is opened and then enable the the weaponInSafe_Collider
 
-                    OpenPanel.SetActive(false);// panel is invincible
+                    openPanel.SetActive(false);// panel is invincible
                     _animator.SetBool("weaponSlot_showNoError", true);
-                    OpenPanel = null;
-                    Laptop_GameScript_3.KeyCard_To_Laptop = false; // deactivate panel "game"
+                    openPanel = null;
+                    Laptop_GameScript_3.keyCard_To_Laptop = false; // deactivate panel "game"
 
                 }
 
@@ -129,7 +131,7 @@ public class WeaponSafe_CorridorScript : MonoBehaviour {
         }
     }
 
-    
+
     void DestroyPanel()
     {
         destroyKeycardMinimalized004 = GameObject.FindGameObjectWithTag("keycard004");
@@ -153,3 +155,4 @@ public class WeaponSafe_CorridorScript : MonoBehaviour {
 
     }
 }
+

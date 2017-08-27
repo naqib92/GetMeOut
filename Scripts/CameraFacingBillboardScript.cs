@@ -5,26 +5,11 @@ using System.Collections;
 //Goes to EnemyCanvas
 public class CameraFacingBillboardScript : MonoBehaviour
 {
-
+    public Camera fpsCam;
     void Update()
     {
-        //transform.LookAt(Camera.current.transform); // the object that is looking to the camera is mirrowed
-
-        //FIXED
-        //transform.rotation = Quaternion.LookRotation(transform.position - Camera.main.transform.position);
-        transform.rotation = Quaternion.LookRotation(transform.position - Camera.current.transform.position);
+        transform.rotation = Quaternion.LookRotation(transform.position - fpsCam.transform.position);
     }
 }
 
-/**
-Private Transform Player;
 
-    void Start()
-{
-    PlayerPlayer = GameObject.Find("FirstPersonCharacter").GetComponent<Transform>();
-}
-    void Update()
-    {
-    transform.LookAt(player)
-    }
-**/

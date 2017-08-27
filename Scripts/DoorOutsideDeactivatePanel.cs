@@ -1,18 +1,25 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class DoorOutsideDeactivatePanel : MonoBehaviour {
+public class DoorOutsideDeactivatePanel : MonoBehaviour
+{
 
-    public GameObject OutsideDoorIsOpened;
+    //Hierarchy --> corridor_wall_goOutside
+    //if player enter the trigger
+    public GameObject outsideDoorIsOpened;
+
+
     //collision with the box collider
     void OnTriggerEnter(Collider other)
     {
-        OutsideDoorIsOpened.SetActive(false); // deactivates the panel "door to go outside is opened" which was activated in weaponScript.cs => OutsideDoorIsOpened.SetActive(true);
+
+        outsideDoorIsOpened.SetActive(false); // deactivates the panel "door to go outside is opened" which was activated in weaponScript.cs => OutsideDoorIsOpened.SetActive(true);
     }
 
 
     // Update is called once per frame
-    void Update () {
-	
-	}
+    void Update()
+    {
+
+    }
 }

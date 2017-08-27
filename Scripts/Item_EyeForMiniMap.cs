@@ -2,19 +2,27 @@
 using System.Collections;
 
 public class Item_EyeForMiniMap : MonoBehaviour {
-    public GameObject OpenPanel = null;
+    public GameObject openPanel = null;
     public Camera fpsCam;
     public GameObject miniMapCam;
+    public GameObject enemyCounter_Panel;
+    private Animator _animator;
+    public GameObject pointerToEnemy_Yellow;//activate only the yellow  pointer
+    public GameObject pointerToEnemy_Yellow1;//activate only the yellow  pointer
+    public GameObject pointerToEnemy_Yellow2;//activate only the yellow  pointer
+    public GameObject pointerToEnemy_Yellow3;//activate only the yellow  pointer
+    public GameObject pointerToEnemy_Yellow4;//activate only the yellow  pointer
+
 
     public bool inTrigger;
-    public string OpenText = "Take Item";
-    public string CloseText = "";
+    public string openText = "Take Item";
+    public string closeText = "";
     private bool _isOpen = false;
 
 
     // Use this for initialization
     void Start () {
-        
+        _animator = GetComponent<Animator>();
 
     }
 
@@ -25,17 +33,17 @@ public class Item_EyeForMiniMap : MonoBehaviour {
     {
         get
         {
-            return OpenPanel.activeInHierarchy;
+            return openPanel.activeInHierarchy;
         }
     }
 
     // for updating the item panel text
     private void UpdatePanelText()
     {
-        UnityEngine.UI.Text panelText = OpenPanel.transform.FindChild("Text").GetComponent<UnityEngine.UI.Text>();
+        UnityEngine.UI.Text panelText = openPanel.transform.FindChild("Text").GetComponent<UnityEngine.UI.Text>();
         if (panelText != null)
         {
-            panelText.text = _isOpen ? CloseText : OpenText;//if _isOpen is true return CloseText or else return openText
+            panelText.text = _isOpen ? closeText : openText;//if _isOpen is true return closeText or else return openText
         }
     }
 
@@ -49,7 +57,7 @@ public class Item_EyeForMiniMap : MonoBehaviour {
             {
                 inTrigger = true;
                 UpdatePanelText();
-                OpenPanel.SetActive(true);
+                openPanel.SetActive(true);
 
             }
 
@@ -57,7 +65,7 @@ public class Item_EyeForMiniMap : MonoBehaviour {
         }
         else
         {
-            OpenPanel.SetActive(false);
+            openPanel.SetActive(false);
             inTrigger = false;
 
         }
@@ -74,8 +82,17 @@ public class Item_EyeForMiniMap : MonoBehaviour {
             if (Input.GetMouseButtonDown(1))
             {
                 miniMapCam.SetActive(true);
-                Destroy(this.gameObject);
-                OpenPanel.SetActive(false);
+                Destroy(GameObject.FindWithTag("item_Eye"));// destroy cross health item
+                openPanel.SetActive(false);
+                _animator.SetBool("floating_Rocks", true);
+                enemyCounter_Panel.SetActive(true);
+
+
+                pointerToEnemy_Yellow.SetActive(true);
+                pointerToEnemy_Yellow1.SetActive(true);
+                pointerToEnemy_Yellow2.SetActive(true);
+                pointerToEnemy_Yellow3.SetActive(true);
+                pointerToEnemy_Yellow4.SetActive(true);
             }
         }
 

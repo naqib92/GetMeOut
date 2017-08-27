@@ -5,9 +5,11 @@ using UnityEngine.UI;
 public class Keypad_BedRoom_SAFE_Script : MonoBehaviour
 {
 
-    public GameObject OpenPanel_Keypad = null;
+    public GameObject openPanel_Keypad = null;
     public Animator _animator;
+    public GameObject destroyPasswordMinimalized;//using tag to destroy
     public Camera fpsCam;
+    public Collider keycard_Terminal1;// activate the keycard collider when door is opened
 
     public string currentPassword_BedRoom = "000";
     public bool bedroom_inTrigger;
@@ -45,11 +47,11 @@ public class Keypad_BedRoom_SAFE_Script : MonoBehaviour
             if (hit.collider.gameObject.tag == "safe_Bedroom")
             {
                 bedroom_inTrigger = true;
-                OpenPanel_Keypad.SetActive(true);
+                openPanel_Keypad.SetActive(true);
             }
             if (hit.collider.gameObject.tag == "chestdrawer_Bedroom")// in case raycast hits the chestdrawer Safe then deactivate the bedroom safe panel
             {
-                OpenPanel_Keypad.SetActive(false);
+                openPanel_Keypad.SetActive(false);
             }
 
         }
@@ -57,7 +59,7 @@ public class Keypad_BedRoom_SAFE_Script : MonoBehaviour
         {
             bedroom_inTrigger = false;
             bedroom_keyPadScreen = false;
-            OpenPanel_Keypad.SetActive(false);
+            openPanel_Keypad.SetActive(false);
 
         }
 
@@ -157,10 +159,11 @@ public class Keypad_BedRoom_SAFE_Script : MonoBehaviour
 
 
             _animator.SetBool("Safe_DoorOpen_Bedroom", true);
-            OpenPanel_Keypad.SetActive(false);
+            openPanel_Keypad.SetActive(false);
             bedroom_inTrigger = false;
             bedroom_keyPadScreen = false;
-            
+            Destroy(destroyPasswordMinimalized);
+            keycard_Terminal1.enabled = true;//collider is enabled
         }
 
     }

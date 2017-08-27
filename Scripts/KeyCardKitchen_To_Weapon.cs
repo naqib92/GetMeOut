@@ -4,11 +4,14 @@ using System.Collections;
 public class KeyCardKitchen_To_Weapon : MonoBehaviour {
 
     
-    public GameObject OpenPanel = null;
+    public GameObject openPanel = null;
     public GameObject shownMinimizedKeycard004;
     public Camera fpsCam;
-    public string OpenText = "Take key card";
-    public string CloseText = "";
+
+
+    public string openText = "Take key card";
+    public string closeText = "";
+
 
     private bool _isOpen = false;
     public bool inTrigger;
@@ -19,17 +22,17 @@ public class KeyCardKitchen_To_Weapon : MonoBehaviour {
     {
         get
         {
-            return OpenPanel.activeInHierarchy;
+            return openPanel.activeInHierarchy;
         }
     }
 
     // for updating the key card panel text
     private void UpdatePanelText()
     {
-        UnityEngine.UI.Text panelText = OpenPanel.transform.FindChild("Text").GetComponent<UnityEngine.UI.Text>();
+        UnityEngine.UI.Text panelText = openPanel.transform.FindChild("Text").GetComponent<UnityEngine.UI.Text>();
         if (panelText != null)
         {
-            panelText.text = _isOpen ? CloseText : OpenText;//if _isOpen is true return CloseText or else return openText
+            panelText.text = _isOpen ? closeText : openText;//if _isOpen is true return closeText or else return openText
         }
     }
 
@@ -44,14 +47,14 @@ public class KeyCardKitchen_To_Weapon : MonoBehaviour {
             {
                 inTrigger = true;
                 UpdatePanelText();
-                OpenPanel.SetActive(true);// panel can now being seen
+                openPanel.SetActive(true);// panel can now being seen
             }
 
 
         }
         else
         {
-            OpenPanel.SetActive(false);// panel is invincible
+            openPanel.SetActive(false);// panel is invincible
             inTrigger = false;
         }
 
@@ -64,13 +67,13 @@ public class KeyCardKitchen_To_Weapon : MonoBehaviour {
             if (Input.GetMouseButtonDown(1))
             {
                 //DoorBedroomScript.keyCardBedroom = true;
-                Laptop_GameScript_3.KeyCard_To_Laptop = true;// set to true so player can play the third game
-                WeaponSafe_CorridorScript.KeyCard_To_Laptop = true; // set to true so the weapon safe shows "go do activation to open" 
+                Laptop_GameScript_3.keyCard_To_Laptop = true;// set to true so player can play the third game
+                WeaponSafe_CorridorScript.keyCard_To_Laptop = true; // set to true so the weapon safe shows "go do activation to open" 
 
                 Laptop_GameScript_2.putOffPanel_Game2 = true;// in case second game wasnt played then dont show the panel
                 Laptop_GameScript.putOffPanel_Game1 = true;// in case first game wasnt played then dont show the panel
                 Destroy(this.gameObject);
-                OpenPanel.SetActive(false);// panel is invincible
+                openPanel.SetActive(false);// panel is invincible
                 shownMinimizedKeycard004.SetActive(true);
             }
         }

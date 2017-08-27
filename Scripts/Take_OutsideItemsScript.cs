@@ -1,17 +1,17 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Take_OutsideItemsScript : MonoBehaviour {
+public class Take_OutsideItemsScript : MonoBehaviour
+{
 
-    public GameObject OpenPanel = null;
-    public GameObject displayItem;
+    public GameObject openPanel = null;
     public GameObject showpassword_Panel;
     public Camera fpsCam;
     private PlayerStatusScript giveHealth;
 
 
-    public string OpenText = "Take item";
-    public string CloseText = "";
+    public string openText = "Take item";
+    public string closeText = "";
     private bool _isOpen = false;
 
     private bool inTrigger;
@@ -33,17 +33,17 @@ public class Take_OutsideItemsScript : MonoBehaviour {
     {
         get
         {
-            return OpenPanel.activeInHierarchy;
+            return openPanel.activeInHierarchy;
         }
     }
 
     // for updating the health cross panel text
     private void UpdatePanelText()
     {
-        UnityEngine.UI.Text panelText = OpenPanel.transform.FindChild("Text").GetComponent<UnityEngine.UI.Text>();
+        UnityEngine.UI.Text panelText = openPanel.transform.FindChild("Text").GetComponent<UnityEngine.UI.Text>();
         if (panelText != null)
         {
-            panelText.text = _isOpen ? CloseText : OpenText;//if _isOpen is true return CloseText or else return openText
+            panelText.text = _isOpen ? closeText : openText;//if _isOpen is true return CloseText or else return openText
         }
     }
 
@@ -59,7 +59,7 @@ public class Take_OutsideItemsScript : MonoBehaviour {
             {
                 inTrigger = true;
                 UpdatePanelText();
-                OpenPanel.SetActive(true);
+                openPanel.SetActive(true);
 
             }
             //health cross 1
@@ -67,40 +67,40 @@ public class Take_OutsideItemsScript : MonoBehaviour {
             {
                 inTrigger1 = true;
                 UpdatePanelText();
-                OpenPanel.SetActive(true);
+                openPanel.SetActive(true);
             }
             //health cross 2
             if (hit.collider.gameObject.tag == "take_Health(2)")
             {
                 inTrigger2 = true;
                 UpdatePanelText();
-                OpenPanel.SetActive(true);
+                openPanel.SetActive(true);
             }
             //health cross 3
             if (hit.collider.gameObject.tag == "take_Health(3)")
             {
                 inTrigger3 = true;
                 UpdatePanelText();
-                OpenPanel.SetActive(true);
+                openPanel.SetActive(true);
             }
             //health cross 4
             if (hit.collider.gameObject.tag == "take_PaperOutside")
             {
                 inTrigger4 = true;
                 UpdatePanelText();
-                OpenPanel.SetActive(true);
+                openPanel.SetActive(true);
             }
 
 
         }
         else
         {
-           OpenPanel.SetActive(false);
-           inTrigger = false;
-           inTrigger1 = false;
-           inTrigger2 = false;
-           inTrigger3 = false;
-           inTrigger4 = false;
+            openPanel.SetActive(false);
+            inTrigger = false;
+            inTrigger1 = false;
+            inTrigger2 = false;
+            inTrigger3 = false;
+            inTrigger4 = false;
 
         }
 
@@ -110,16 +110,16 @@ public class Take_OutsideItemsScript : MonoBehaviour {
 
     // if _isInsideTrigger is true and mouse is pressed destroy object and increase health 
     void InsideTrigger()
-    {   
+    {
         //health cross 0
         if (inTrigger)
         {
-            
+
             if (Input.GetMouseButtonDown(1))
             {
                 giveHealth.IncreaseHealth(health);// increase health
                 Destroy(GameObject.FindWithTag("take_Health"));// destroy cross health item
-                OpenPanel.SetActive(false);// panel is invincible
+                openPanel.SetActive(false);// panel is invincible
                 inTrigger = false;
             }
         }
@@ -130,8 +130,8 @@ public class Take_OutsideItemsScript : MonoBehaviour {
             {
                 giveHealth.IncreaseHealth(health);// increase health
                 Destroy(GameObject.FindWithTag("take_Health(1)"));// destroy cross health item
-                OpenPanel.SetActive(false);// panel is invincible
-               inTrigger1 = false;
+                openPanel.SetActive(false);// panel is invincible
+                inTrigger1 = false;
             }
         }
         //health cross 2
@@ -141,7 +141,7 @@ public class Take_OutsideItemsScript : MonoBehaviour {
             {
                 giveHealth.IncreaseHealth(health);// increase health
                 Destroy(GameObject.FindWithTag("take_Health(2)"));// destroy cross health item
-                OpenPanel.SetActive(false);// panel is invincible
+                openPanel.SetActive(false);// panel is invincible
                 inTrigger2 = false;
             }
         }
@@ -152,18 +152,18 @@ public class Take_OutsideItemsScript : MonoBehaviour {
             {
                 giveHealth.IncreaseHealth(health);// increase health
                 Destroy(GameObject.FindWithTag("take_Health(3)"));// destroy cross health item
-                OpenPanel.SetActive(false);// panel is invincible
+                openPanel.SetActive(false);// panel is invincible
                 inTrigger3 = false;
             }
         }
-        //health cross 3
+        //paper
         if (inTrigger4)
         {
             if (Input.GetMouseButtonDown(1))
             {
                 showpassword_Panel.SetActive(true);
                 Destroy(GameObject.FindWithTag("take_PaperOutside"));// destroy paper item
-                OpenPanel.SetActive(false);// panel is invincible
+                openPanel.SetActive(false);// panel is invincible
                 inTrigger4 = false;
             }
         }
@@ -172,7 +172,7 @@ public class Take_OutsideItemsScript : MonoBehaviour {
 
     void Update()
     {
-            _RaycastHit();
-             InsideTrigger();
+        _RaycastHit();
+        InsideTrigger();
     }
 }
