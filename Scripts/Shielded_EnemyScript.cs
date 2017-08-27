@@ -6,7 +6,12 @@ public class Shielded_EnemyScript : MonoBehaviour {
 
     public GameObject enemy;                     // when shield is destroyed change the tag(shielded_enemy) of monster(4) to tag(enemy), 
                                                  //so that if(hit.collider.tag == "enemy") can be executed in WeaponGunScript.cs
-    public GameObject shieldEffect;//using SharpRing effect
+
+    public ParticleSystem shieldEffectSharpRing;
+    public ParticleSystem shieldEffectParticles;
+    public ParticleSystem shieldEffectGlowingRing;
+
+
 
     public float maxHealthShield = 30f;
     private float currentHealthShield = 0f;
@@ -20,8 +25,9 @@ public class Shielded_EnemyScript : MonoBehaviour {
 
     public void shield()
     {
-        GameObject shieldGameObject = Instantiate(shieldEffect, transform.position, transform.rotation) as GameObject;
-        Destroy(shieldGameObject, 2f);
+        shieldEffectSharpRing.Play();
+        shieldEffectParticles.Play();
+        shieldEffectGlowingRing.Play();
     }
 
 
