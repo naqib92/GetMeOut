@@ -22,7 +22,7 @@ public class HealthBar_BlurScript : MonoBehaviour {
 
     }
 
-    public IEnumerator OnOff_Healthblur()
+    IEnumerator OnOff_Healthblur()
     {
 
         barRedBlur.enabled = true;
