@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+using UnityEngine.EventSystems;
 public class MicrowaveScript : MonoBehaviour {
 
 
@@ -77,29 +77,26 @@ public class MicrowaveScript : MonoBehaviour {
     //if microwave panel is active, _isInsideTrigger is true and mouse is pressed then open the microwave door
     void InsideTrigger()
     {
-        // when panel is visible show text 
-        if (IsOpenPanelActive && _isInsideTrigger)
+        if (!EventSystem.current.IsPointerOverGameObject()) //stop raycast on UI clicks. when UI is activ, gameObjects arent hit with raycast.
         {
-            if (Input.GetMouseButtonDown(1))
+            // when panel is visible show text 
+            if (IsOpenPanelActive && _isInsideTrigger)
             {
-                //  _isOpen = !_isOpen;
-
-                // UpdatePanelText();
-
-                _animator.SetBool("open_Microwave", true);
-                openPanel.SetActive(false);
-                microwaveCollider.enabled = false;
+                if (Input.GetMouseButtonDown(1))
+                {
+                    _animator.SetBool("open_Microwave", true);
+                    openPanel.SetActive(false);
+                    microwaveCollider.enabled = false;
+                    FindObjectOfType<SFX_Manager>().Play("openMicrowave");
+                }
             }
         }
-
     }
 
     // Update is called once per frame
     void Update ()
     {
-
         _RaycastHit();
         InsideTrigger();
-
     }
 }

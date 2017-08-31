@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
-
+using UnityEngine.EventSystems;
 public class KeyCardTerminal1Script : MonoBehaviour {
 
 
@@ -9,11 +8,15 @@ public class KeyCardTerminal1Script : MonoBehaviour {
     public Camera fpsCam;
     public GameObject keycard;
     public GameObject miniMap_keycard;
+    public GameObject pointerToKeycardTerminal;
+    public GameObject pointerToTerminal;
 
     public bool inTrigger;
     public string openText = "Take key card";
     public string closeText = "";
     private bool _isOpen = false;
+
+
 
 
     // for checking if the key card panel is activ
@@ -59,25 +62,32 @@ public class KeyCardTerminal1Script : MonoBehaviour {
     //if _isInsideTrigger is true and mouse is pressed destroy key card and display "key card obtained" 
     void InsideTrigger()
     {
-        // when panel is visible show text 
-        if (inTrigger)
+        if (!EventSystem.current.IsPointerOverGameObject()) //stop raycast on UI clicks. when UI is activ, gameObjects arent hit with raycast.
         {
-            if (Input.GetMouseButtonDown(1))
+            // when panel is visible show text 
+            if (inTrigger)
             {
-                Terminal_1Script.keyCardTerminal1 = true;
-                keycard.SetActive(false);
-                miniMap_keycard.SetActive(false);
-                openPanel.SetActive(false);
-                shownMinimizedKeycard.SetActive(true);
+                if (Input.GetMouseButtonDown(1))
+                {
+                    Terminal_1Script.keyCardTerminal1 = true;
+                    keycard.SetActive(false);
+                    miniMap_keycard.SetActive(false);
+                    openPanel.SetActive(false);
+                    shownMinimizedKeycard.SetActive(true);
+                    pointerToKeycardTerminal.SetActive(false);
+                    pointerToTerminal.SetActive(true);
+
+                    FindObjectOfType<SFX_Manager>().Play("gotItem");
+                }
             }
         }
-
     }
     void Update()
     {
 
         _RaycastHit();
         InsideTrigger();
+
 
     }
 

@@ -8,6 +8,8 @@ public class GameSettings{
     public int antialiasing;
     public int vSync;
     public int resolutionIndex;
-    public float musicVolume; 
+    //public float musicVolume;
+    //public float sfxVolume;
+    public float masterVolume;
 
 }

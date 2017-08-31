@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
-
+using UnityEngine.EventSystems;
 public class DoorKitchenScript : MonoBehaviour {
 
     public Animator _animator;
@@ -98,28 +97,25 @@ public class DoorKitchenScript : MonoBehaviour {
     // if _isInsideTrigger is true and mouse is pressed open kitchen door, show no error and deactivate kitchen door panel
     void InsideTrigger()
     {
-        if (inTrigger == true)
+        if (!EventSystem.current.IsPointerOverGameObject()) //stop raycast on UI clicks. when UI is activ, gameObjects arent hit with raycast.
         {
-
-            if (Input.GetMouseButtonDown(1))
+            if (inTrigger == true)
             {
-
-                if (keycardIsActiv == true)
+                if (Input.GetMouseButtonDown(1))
                 {
-                    _animator.SetBool("openKitchenDoor", true);
-                    openPanel.SetActive(false);// panel is invincible
-                    _animator.SetBool("KitchenSlot_showNoError", true);
-                    openPanel = null;
-                    Laptop_GameScript_2.keyCard_To_Laptop = false;// dont show the game on the laptop
+                    if (keycardIsActiv == true)
+                    {
+                        FindObjectOfType<SFX_Manager>().Play("doorOpen");
+                        _animator.SetBool("openKitchenDoor", true);
+                        openPanel.SetActive(false);// panel is invincible
+                        _animator.SetBool("KitchenSlot_showNoError", true);
+                        openPanel = null;
+                        Laptop_GameScript_2.keyCard_To_Laptop = false;// dont show the game on the laptop
+                    }
                 }
 
             }
-
-
-
-
         }
-
     }
 
     // destroy the mini panel "keycard obtainded" and "keycard is activ" when door opens

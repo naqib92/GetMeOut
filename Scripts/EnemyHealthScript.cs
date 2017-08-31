@@ -8,6 +8,7 @@ public class EnemyHealthScript : MonoBehaviour {
 
     private static int enemiesDeadCounter = 5;
     public Text enemiesCounterText;
+    public GameObject enemiesCounterPanel;
 
     public Image bar;
     public GameObject destroyedVersion; //using Prefab MonsterNormalAnimFall (Animation) or MonsterNormalNoAnimFall Rigidbody(physics)
@@ -18,6 +19,8 @@ public class EnemyHealthScript : MonoBehaviour {
 
     public GameObject pointerToEnemy_Red;//for destroying the pointer
     public GameObject pointerToEnemy_Yellow;//for destroying the pointer
+
+    public GameObject pointerToKeycardTerminal;
 
     void Start()
     {
@@ -36,6 +39,7 @@ public class EnemyHealthScript : MonoBehaviour {
             Die();
             crossHair_InRangeBlack.SetActive(false);
             crossHair_InRangeGreen.SetActive(false);
+            FindObjectOfType<SFX_Manager>().Play("stoneDrop");
         }
     }
 
@@ -48,6 +52,8 @@ public class EnemyHealthScript : MonoBehaviour {
 
     void Die()
     {
+
+        
         Instantiate(displayItem, transform.position, transform.rotation);// display cross health or paper
         Instantiate(destroyedVersion, transform.position, transform.rotation);//display the enemy falling to the ground
         Destroy(gameObject);// destroy the enemy
@@ -64,6 +70,9 @@ public class EnemyHealthScript : MonoBehaviour {
             Debug.Log("dead");
             Destroy(GameObject.FindWithTag("caveDoor1"));// destroy paper item
             Destroy(GameObject.FindWithTag("caveDoor2"));// destroy paper item
+
+            enemiesCounterPanel.SetActive(false);
+            pointerToKeycardTerminal.SetActive(true);
         }
 
 

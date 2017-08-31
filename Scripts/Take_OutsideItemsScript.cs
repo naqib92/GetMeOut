@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
-
+using UnityEngine.EventSystems;
 public class Take_OutsideItemsScript : MonoBehaviour
 {
 
@@ -111,60 +110,68 @@ public class Take_OutsideItemsScript : MonoBehaviour
     // if _isInsideTrigger is true and mouse is pressed destroy object and increase health 
     void InsideTrigger()
     {
-        //health cross 0
-        if (inTrigger)
+        if (!EventSystem.current.IsPointerOverGameObject()) //stop raycast on UI clicks. when UI is activ, gameObjects arent hit with raycast.
         {
+            //health cross 0
+            if (inTrigger)
+            {
 
-            if (Input.GetMouseButtonDown(1))
-            {
-                giveHealth.IncreaseHealth(health);// increase health
-                Destroy(GameObject.FindWithTag("take_Health"));// destroy cross health item
-                openPanel.SetActive(false);// panel is invincible
-                inTrigger = false;
+                if (Input.GetMouseButtonDown(1))
+                {
+                    giveHealth.IncreaseHealth(health);// increase health
+                    Destroy(GameObject.FindWithTag("take_Health"));// destroy cross health item
+                    openPanel.SetActive(false);// panel is invincible
+                    inTrigger = false;
+                    FindObjectOfType<SFX_Manager>().Play("gotItem");
+                }
             }
-        }
-        //health cross 1
-        if (inTrigger1)
-        {
-            if (Input.GetMouseButtonDown(1))
+            //health cross 1
+            if (inTrigger1)
             {
-                giveHealth.IncreaseHealth(health);// increase health
-                Destroy(GameObject.FindWithTag("take_Health(1)"));// destroy cross health item
-                openPanel.SetActive(false);// panel is invincible
-                inTrigger1 = false;
+                if (Input.GetMouseButtonDown(1))
+                {
+                    giveHealth.IncreaseHealth(health);// increase health
+                    Destroy(GameObject.FindWithTag("take_Health(1)"));// destroy cross health item
+                    openPanel.SetActive(false);// panel is invincible
+                    inTrigger1 = false;
+                    FindObjectOfType<SFX_Manager>().Play("gotItem");
+                }
             }
-        }
-        //health cross 2
-        if (inTrigger2)
-        {
-            if (Input.GetMouseButtonDown(1))
+            //health cross 2
+            if (inTrigger2)
             {
-                giveHealth.IncreaseHealth(health);// increase health
-                Destroy(GameObject.FindWithTag("take_Health(2)"));// destroy cross health item
-                openPanel.SetActive(false);// panel is invincible
-                inTrigger2 = false;
+                if (Input.GetMouseButtonDown(1))
+                {
+                    giveHealth.IncreaseHealth(health);// increase health
+                    Destroy(GameObject.FindWithTag("take_Health(2)"));// destroy cross health item
+                    openPanel.SetActive(false);// panel is invincible
+                    inTrigger2 = false;
+                    FindObjectOfType<SFX_Manager>().Play("gotItem");
+                }
             }
-        }
-        //health cross 3
-        if (inTrigger3)
-        {
-            if (Input.GetMouseButtonDown(1))
+            //health cross 3
+            if (inTrigger3)
             {
-                giveHealth.IncreaseHealth(health);// increase health
-                Destroy(GameObject.FindWithTag("take_Health(3)"));// destroy cross health item
-                openPanel.SetActive(false);// panel is invincible
-                inTrigger3 = false;
+                if (Input.GetMouseButtonDown(1))
+                {
+                    giveHealth.IncreaseHealth(health);// increase health
+                    Destroy(GameObject.FindWithTag("take_Health(3)"));// destroy cross health item
+                    openPanel.SetActive(false);// panel is invincible
+                    inTrigger3 = false;
+                    FindObjectOfType<SFX_Manager>().Play("gotItem");
+                }
             }
-        }
-        //paper
-        if (inTrigger4)
-        {
-            if (Input.GetMouseButtonDown(1))
+            //paper
+            if (inTrigger4)
             {
-                showpassword_Panel.SetActive(true);
-                Destroy(GameObject.FindWithTag("take_PaperOutside"));// destroy paper item
-                openPanel.SetActive(false);// panel is invincible
-                inTrigger4 = false;
+                if (Input.GetMouseButtonDown(1))
+                {
+                    showpassword_Panel.SetActive(true);
+                    Destroy(GameObject.FindWithTag("take_PaperOutside"));// destroy paper item
+                    openPanel.SetActive(false);// panel is invincible
+                    inTrigger4 = false;
+                    FindObjectOfType<SFX_Manager>().Play("gotItem");
+                }
             }
         }
     }

@@ -1,6 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
-
 public class DoorOutsideScript : MonoBehaviour {
 
     public Animator _animator;

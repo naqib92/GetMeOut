@@ -1,7 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
+﻿using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class DoorBedroomScript : MonoBehaviour
 {
@@ -77,24 +75,24 @@ public class DoorBedroomScript : MonoBehaviour
     //if _isInsideTrigger is true and mouse is pressed open bedroom door, show no error and deactivate the bedroom door panel
     void InsideTrigger()
     {
-        if (inTrigger == true)
+        if (!EventSystem.current.IsPointerOverGameObject()) //stop raycast on UI clicks. when UI is activ, gameObjects arent hit with raycast.
         {
-
-            if (keyCardBedroom)
+            if (inTrigger == true)
             {
-                if (Input.GetMouseButtonDown(1))
+
+                if (keyCardBedroom)
                 {
-                    _animator.SetBool("BedroomSlot_showNoError", true);
-                    _animator.SetBool("OpenDoorBedroom", true);
-                    openPanel.SetActive(false);
-                    openPanel = null;
-
+                    if (Input.GetMouseButtonDown(1))
+                    {
+                        _animator.SetBool("BedroomSlot_showNoError", true);
+                        _animator.SetBool("OpenDoorBedroom", true);
+                        openPanel.SetActive(false);
+                        openPanel = null;
+                        FindObjectOfType<SFX_Manager>().Play("doorOpen");
+                    }
                 }
-
-
             }
         }
-
     }
 
     // destroy the mini panel "keycard obtainded" when doors opens

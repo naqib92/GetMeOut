@@ -1,7 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
+﻿using UnityEngine;
+using UnityEngine.EventSystems;
 public class WardrobeSliderRScript : MonoBehaviour
 {
 
@@ -72,18 +70,22 @@ public class WardrobeSliderRScript : MonoBehaviour
 
     void InsideTrigger()
     {
-        // if the wardrobeslider panel is activ and if _isInsideTrigger is true
-        if (IsOpenPanelActive && _isInsideTrigger)
+        if (!EventSystem.current.IsPointerOverGameObject()) //stop raycast on UI clicks. when UI is activ, gameObjects arent hit with raycast.
         {
-            if (Input.GetMouseButtonDown(1))
+
+            // if the wardrobeslider panel is activ and if _isInsideTrigger is true
+            if (IsOpenPanelActive && _isInsideTrigger)
             {
-                _animator.SetBool("open_WardrobeSliderR", true);
-                openPanel.SetActive(false);
-                keycard_Bedroom.SetActive(true);
-                wadrobeCollider.enabled = false;
+                if (Input.GetMouseButtonDown(1))
+                {
+                    _animator.SetBool("open_WardrobeSliderR", true);
+                    openPanel.SetActive(false);
+                    keycard_Bedroom.SetActive(true);
+                    wadrobeCollider.enabled = false;
+                    FindObjectOfType<SFX_Manager>().Play("wardrobeOpen");
+                }
             }
         }
-
     }
 
     // Update is called once per frame

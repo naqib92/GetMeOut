@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEngine.UI;
 
 public class Shielded_EnemyScript : MonoBehaviour {
@@ -28,6 +27,7 @@ public class Shielded_EnemyScript : MonoBehaviour {
         shieldEffectSharpRing.Play();
         shieldEffectParticles.Play();
         shieldEffectGlowingRing.Play();
+        FindObjectOfType<SFX_Manager>().Play("shield");
     }
 
 

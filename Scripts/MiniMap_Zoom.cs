@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
+
 
 public class MiniMap_Zoom : MonoBehaviour {
     //used couch wall as box collider for zooming in the apartment!

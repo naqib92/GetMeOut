@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-using System.Collections.Generic;
+using UnityEngine.EventSystems;
 public class WeaponSafe_CorridorScript : MonoBehaviour
 {
 
@@ -106,28 +106,27 @@ public class WeaponSafe_CorridorScript : MonoBehaviour
     // if panel is activ, if _isInsideTrigger is true and mouse pressed, then open the safe 
     void InsideTrigger()
     {
-        if (inTrigger == true)
+        if (!EventSystem.current.IsPointerOverGameObject()) //stop raycast on UI clicks. when UI is activ, gameObjects arent hit with raycast.
         {
-
-            if (Input.GetMouseButtonDown(1))
+            if (inTrigger == true)
             {
-
-               
-               //  if (true)
-                if (keycardIsActiv == true)
+                if (Input.GetMouseButtonDown(1))
                 {
-                    _animator.SetBool("openWeaponSafe", true);// open the safe
-                    StartCoroutine(openSafe());// wait for a certain amount of time till safe is opened and then enable the the weaponInSafe_Collider
+                   //if (true)
+                    if (keycardIsActiv == true)
+                    {
+                        _animator.SetBool("openWeaponSafe", true);// open the safe
+                        StartCoroutine(openSafe());// wait for a certain amount of time till safe is opened and then enable the the weaponInSafe_Collider
 
-                    openPanel.SetActive(false);// panel is invincible
-                    _animator.SetBool("weaponSlot_showNoError", true);
-                    openPanel = null;
-                    Laptop_GameScript_3.keyCard_To_Laptop = false; // deactivate panel "game"
+                        openPanel.SetActive(false);// panel is invincible
+                        _animator.SetBool("weaponSlot_showNoError", true);
+                        openPanel = null;
+                        Laptop_GameScript_3.keyCard_To_Laptop = false; // deactivate panel "game"
+                        FindObjectOfType<SFX_Manager>().Play("doorOpen");
 
+                    }
                 }
-
             }
-
         }
     }
 

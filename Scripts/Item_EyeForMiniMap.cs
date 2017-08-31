@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
-
+using UnityEngine.EventSystems;
 public class Item_EyeForMiniMap : MonoBehaviour {
     public GameObject openPanel = null;
     public Camera fpsCam;
@@ -77,25 +76,28 @@ public class Item_EyeForMiniMap : MonoBehaviour {
     // if _isInsideTrigger is true and mouse is pressed destroy item and display "item obtained" 
     void InsideTrigger()
     {
-        if (inTrigger)
+        if (!EventSystem.current.IsPointerOverGameObject()) //stop raycast on UI clicks. when UI is activ, gameObjects arent hit with raycast.
         {
-            if (Input.GetMouseButtonDown(1))
+            if (inTrigger)
             {
-                miniMapCam.SetActive(true);
-                Destroy(GameObject.FindWithTag("item_Eye"));// destroy cross health item
-                openPanel.SetActive(false);
-                _animator.SetBool("floating_Rocks", true);
-                enemyCounter_Panel.SetActive(true);
+                if (Input.GetMouseButtonDown(1))
+                {
+                    FindObjectOfType<SFX_Manager>().Play("gotSpecialItem");
+                    miniMapCam.SetActive(true);
+                    Destroy(GameObject.FindWithTag("item_Eye"));// destroy cross health item
+                    openPanel.SetActive(false);
+                    _animator.SetBool("floating_Rocks", true);
+                    enemyCounter_Panel.SetActive(true);
 
 
-                pointerToEnemy_Yellow.SetActive(true);
-                pointerToEnemy_Yellow1.SetActive(true);
-                pointerToEnemy_Yellow2.SetActive(true);
-                pointerToEnemy_Yellow3.SetActive(true);
-                pointerToEnemy_Yellow4.SetActive(true);
+                    pointerToEnemy_Yellow.SetActive(true);
+                    pointerToEnemy_Yellow1.SetActive(true);
+                    pointerToEnemy_Yellow2.SetActive(true);
+                    pointerToEnemy_Yellow3.SetActive(true);
+                    pointerToEnemy_Yellow4.SetActive(true);
+                }
             }
         }
-
     }
     // Update is called once per frame
     void Update ()

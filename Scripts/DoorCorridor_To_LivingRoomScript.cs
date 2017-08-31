@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
-
+using UnityEngine.EventSystems;
 public class DoorCorridor_To_LivingRoomScript : MonoBehaviour {
 
     public Animator _animator;
@@ -70,19 +69,21 @@ public class DoorCorridor_To_LivingRoomScript : MonoBehaviour {
     //if _isInsideTrigger is true and mouse is pressed, open livingroom door deactiviate the livingroom door panel
     void InsideTrigger()
     {
-        if (inTrigger == true)
+        if (!EventSystem.current.IsPointerOverGameObject()) //stop raycast on UI clicks. when UI is activ, gameObjects arent hit with raycast.
         {
 
-            if (Input.GetMouseButtonDown(1))
+            if (inTrigger == true)
             {
-                _animator.SetBool("open_CorToLivDoor", true);
-                openPanel.SetActive(false);
+                if (Input.GetMouseButtonDown(1))
+                {
+                    _animator.SetBool("open_CorToLivDoor", true);
+                    openPanel.SetActive(false);
 
-                openPanel = null;
+                    openPanel = null;
+                    FindObjectOfType<SFX_Manager>().Play("doorOpen");
+                }
             }
-
         }
-
     }
 
 

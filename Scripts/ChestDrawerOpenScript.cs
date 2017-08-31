@@ -1,7 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
+﻿using UnityEngine;
+using UnityEngine.EventSystems;
 public class ChestDrawerOpenScript : MonoBehaviour
 {
 
@@ -13,11 +11,13 @@ public class ChestDrawerOpenScript : MonoBehaviour
 
     private bool _isInsideTrigger = false;
     public string openText = "open drawer";
-    public string closeText = "";
+    public string closeText = "close drawer";
 
     private bool _isOpen = false;
 
     private float time;//timer for letting paper appear after 0.7 sec after drawer has been opened
+
+
 
 
 
@@ -86,46 +86,49 @@ public class ChestDrawerOpenScript : MonoBehaviour
 
     void InsideTrigger()
     {
-        // if the chestdrawer panel is activ and if _isInsideTrigger is true
-        if (IsOpenPanelActive && _isInsideTrigger)
+        if (!EventSystem.current.IsPointerOverGameObject()) //stop raycast on UI clicks. when UI is activ, gameObjects arent hit with raycast.
         {
-            if (Input.GetMouseButtonDown(1))
+            // if the chestdrawer panel is activ and if _isInsideTrigger is true
+            if (IsOpenPanelActive && _isInsideTrigger)
             {
-                _isOpen = !_isOpen;
+                if (Input.GetMouseButtonDown(1))
+                {
+                    _isOpen = !_isOpen;
 
-                UpdatePanelText();
+                    UpdatePanelText();
 
-                _animator.SetBool("open", _isOpen);
+                    _animator.SetBool("open", _isOpen);
+                    FindObjectOfType<SFX_Manager>().Play("chestDrawer");
+                }
+            }
+            if (_animator.GetBool("open") == true)
+            {
+                if (Time.time >= time + 0.7f)// time starts running when the drawer is opened. if time reaches 0.7sec then show paper
+                {
+
+                    openPanel_ToReadPaper.SetActive(true);
+                    paper.SetActive(true);
+
+                }
+            }
+            else// if panel is not opened put time to 0
+            {
+                openPanel_ToReadPaper.SetActive(false);
+                paper.SetActive(false);
+                time = Time.time;
+
+            }
+            if (_isInsideTrigger == false)
+            {
+                openPanel_ToReadPaper.SetActive(false);
             }
         }
-        if (_animator.GetBool("open") == true)
-        {
-            if (Time.time >= time + 0.7f)// time starts running when the drawer is opened. if time reaches 0.7sec then show paper
-            {
-
-                openPanel_ToReadPaper.SetActive(true);
-                paper.SetActive(true);
-
-            }
-        }
-        else// if panel is not opened put time to 0
-        {
-            openPanel_ToReadPaper.SetActive(false);
-            paper.SetActive(false);
-            time = Time.time;
-
-        }
-        if (_isInsideTrigger == false)
-        {
-            openPanel_ToReadPaper.SetActive(false);
-        }
-
     }
     // Update is called once per frame
     void Update()
     {
-        _RaycastHit();
-        InsideTrigger();
+            _RaycastHit();
+            InsideTrigger();     
     }
 
 

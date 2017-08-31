@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
-
+using UnityEngine.EventSystems;
 public class ToiletSitScript : MonoBehaviour
 {
 
@@ -73,22 +72,19 @@ public class ToiletSitScript : MonoBehaviour
     //if _isInsideTrigger is true and mouse is pressed open toilet lid
     void InsideTrigger()
     {
-
-        if (IsOpenPanelActive && _isInsideTrigger)
-        {
-            if (Input.GetMouseButtonDown(1))
-            {
-
-                // _isOpen = !_isOpen;
-
-                //UpdatePanelText();
-                _animator.SetBool("open_ToiletSeat", true);
-                keycard_Toilet.SetActive(true);
-                toiletSitCollider.enabled = false;
-
-            }
+        if (!EventSystem.current.IsPointerOverGameObject()) //stop raycast on UI clicks. when UI is activ, gameObjects arent hit with raycast.
+        { 
+                if (IsOpenPanelActive && _isInsideTrigger)
+                {
+                    if (Input.GetMouseButtonDown(1))
+                    {
+                        _animator.SetBool("open_ToiletSeat", true);
+                        keycard_Toilet.SetActive(true);
+                        toiletSitCollider.enabled = false;
+                        FindObjectOfType<SFX_Manager>().Play("toiletSeatUp");
+                    }
+                }
         }
-
     }
 
     // Update is called once per frame

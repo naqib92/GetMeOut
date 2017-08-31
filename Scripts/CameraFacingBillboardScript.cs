@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
+
 
 //Enemy healthbar should always position itself to the fps main camera. 
 //Goes to EnemyCanvas

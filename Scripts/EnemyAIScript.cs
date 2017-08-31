@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
+
 /** Animation Bool States
  * isRunning   !!not used
  * isIdle      !!not used
@@ -39,7 +39,7 @@ public class EnemyAIScript : MonoBehaviour
 
     private float showTime;//For Debugging. used to show how much time has passed in the console
     private string state = "chooseA_SpotToWalk";
-    public static bool isOutside = true; // the enemies are activated when the player takes the weapon. This is set in WeaponInSafeScript.cs
+    public static bool isOutside = false; // the enemies are activated when the player takes the weapon. This is set in WeaponInSafeScript.cs
     private float wait;//when player out runs the enemy, the enemy chases the player for some time and looses interest
     //private float standStill;// when enemy reaches path position, enemy should stay still for a certain amount of time and move after
 
@@ -51,7 +51,13 @@ public class EnemyAIScript : MonoBehaviour
     private float inFrontAttack_distance;//when enemy is in front of player
     private float outOfSight;//when player out runs the enemy, the enemy looses interest
     private float showCrossHair_distance; // when player is 10 units from enemy, crosshair is shown
-    
+
+    public AudioClip[] footsounds;
+    public AudioClip[] hitsounds;
+    private AudioSource sound;
+
+    private float navSpeed = 6.7f;
+
 
 
 
@@ -63,12 +69,23 @@ public class EnemyAIScript : MonoBehaviour
 
     void Start()
     {
-
+        sound = GetComponent<AudioSource>();
         playerStatus = GetComponent<PlayerStatusScript>();
         anim = GetComponent<Animator>();
         nav = GetComponent<NavMeshAgent>();
         nav.speed = 1.2f;     //enemy speed
         //anim.speed = 1.2f;
+    }
+
+    public void FootStep(int _num)
+    {
+       sound.clip = footsounds[_num];
+       sound.Play();
+    }
+    public void HitSound(int _num)
+    {
+        sound.clip = hitsounds[_num];
+        sound.Play();
     }
 
     //check if we can see the player
@@ -98,9 +115,10 @@ public class EnemyAIScript : MonoBehaviour
                     if (state != "inPlainSight")
                     {
                         state = "chase";
-                        nav.speed = 3.7f;
+                        nav.speed = navSpeed;
                         //anim.speed = 3.7f;
                         wait = 10f;
+                        FindObjectOfType<SFX_Manager>().Play("enemyChase");
                     }
                 }
             }
@@ -118,9 +136,10 @@ public class EnemyAIScript : MonoBehaviour
                     if (state != "inPlainSight")
                     {
                         state = "chase";
-                        nav.speed = 3.7f;
+                        nav.speed = navSpeed;
                         //anim.speed = 3.7f;
                         wait = 10f;
+                        FindObjectOfType<SFX_Manager>().Play("enemyChase");
                     }
                 }
             }
@@ -138,9 +157,11 @@ public class EnemyAIScript : MonoBehaviour
                     if (state != "inPlainSight")
                     {
                         state = "chase";
-                        nav.speed = 3.7f;
+                        nav.speed = navSpeed;
                         //anim.speed = 3.7f;
                         wait = 10f;
+                        FindObjectOfType<SFX_Manager>().Play("enemyChase");
+
                     }
                 }
                 RaycastHit rayHit3;
@@ -157,9 +178,10 @@ public class EnemyAIScript : MonoBehaviour
                         if (state != "inPlainSight")
                         {
                             state = "chase";
-                            nav.speed = 3.7f;
+                            nav.speed = navSpeed;
                             //anim.speed = 3.7f;
                             wait = 10f;
+                            FindObjectOfType<SFX_Manager>().Play("enemyChase");
                         }
                     }
                 }
@@ -177,9 +199,10 @@ public class EnemyAIScript : MonoBehaviour
                         if (state != "inPlainSight")
                         {
                             state = "chase";
-                            nav.speed = 3.7f;
+                            nav.speed = navSpeed;
                            // anim.speed = 3.7f;
                             wait = 10f;
+                            FindObjectOfType<SFX_Manager>().Play("enemyChase");
                         }
                     }
                 }

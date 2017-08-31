@@ -1,10 +1,8 @@
 ﻿using UnityEngine;
 using System.Diagnostics;
 
-public class IsDead : MonoBehaviour {
+public class IsFinished : MonoBehaviour {
 
-      public Transform Player;
-      public UnityEngine.UI.Image bar;
 
     public void RestartGame()
     {

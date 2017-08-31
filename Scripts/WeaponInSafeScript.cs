@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
-using System.Collections;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
+using UnityStandardAssets.Characters.FirstPerson;
 
 public class WeaponInSafeScript : MonoBehaviour
 {
@@ -8,10 +10,17 @@ public class WeaponInSafeScript : MonoBehaviour
     public GameObject openPanel = null;
     public GameObject outsideDoorIsOpened_Panel;
     public GameObject weapon;
-   // public GameObject weaponInSafe;
-    public GameObject crosshair;
+    public GameObject weaponInSafe;
     public GameObject weaponIcon;
     public Camera fpsCam;
+
+    public Image introGunBackground;
+    public Image introWeapon;
+    public Button closeIntro;
+    public Transform Player;
+
+    public Image pause_ButtonInfoWeapon;// show button in the pause panel when weapon has been recieved
+
     public string openText = "Take item";
     public string closeText = "";
     public bool inTrigger;
@@ -67,19 +76,48 @@ public class WeaponInSafeScript : MonoBehaviour
         // when panel is visible show text 
         if (inTrigger)
         {
-            if (Input.GetMouseButtonDown(1))
+            if (!EventSystem.current.IsPointerOverGameObject()) //stop raycast on UI clicks. when UI is activ, gameObjects arent hit with raycast.
             {
-                DoorOutsideScript.weaponObtained = true;
-                Destroy(this.gameObject);// destroy the gameobject that the script refers to
-                //weaponInSafe.SetActive(false);
-                openPanel.SetActive(false);// panel is invincible
-                outsideDoorIsOpened_Panel.SetActive(true);// "outside door is now opened"
-                weapon.SetActive(true);// display weapon
-                weaponIcon.SetActive(true);// display weaponIcon
-                crosshair.SetActive(true);
-                EnemyAIScript.isOutside = true;
+                if (Input.GetMouseButtonDown(1))
+                {
+                    FindObjectOfType<SFX_Manager>().Play("gotSpecialItem");
+                    FindObjectOfType<MusicManager>().Stop("song");
+                    FindObjectOfType<MusicManager>().Play("song2");
+                    DoorOutsideScript.weaponObtained = true;
+                    //Destroy(this.gameObject);// destroy the gameobject that the script refers to
+                    weaponInSafe.SetActive(false);
+                    openPanel.SetActive(false);// panel is invincible
+                    outsideDoorIsOpened_Panel.SetActive(true);// "outside door is now opened"
+                    weapon.SetActive(true);// display weapon
+                    weaponIcon.SetActive(true);// display weaponIcons
+                    EnemyAIScript.isOutside = true;
+
+                   pause_ButtonInfoWeapon.gameObject.SetActive(true);
+
+                    introGunBackground.gameObject.SetActive(true);
+                    introWeapon.gameObject.SetActive(true);
+                    Time.timeScale = 0; //stop every movement around the enviroment
+                    Player.GetComponent<FirstPersonController>().enabled = false; //stop the player from moving
+                    Cursor.lockState = CursorLockMode.None;
+                    Cursor.visible = true; // show cursor
+                    IsPause.escape_buttonsEnabled = false; // disable the pause button
+                }
             }
         }
+    }
 
+
+    public void closeIntroWeapon()
+    {
+        FindObjectOfType<SFX_Manager>().Play("buttonSound");
+
+        introGunBackground.gameObject.SetActive(false);
+        introWeapon.gameObject.SetActive(false);
+
+        Time.timeScale = 1;     //allow movements around the enviroment
+        Player.GetComponent<FirstPersonController>().enabled = true;// allow player movement
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+        IsPause.escape_buttonsEnabled = true; // enable the pause button
     }
 }

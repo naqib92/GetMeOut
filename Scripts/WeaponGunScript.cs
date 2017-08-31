@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
+
 
 using System;
 using System.Text;
@@ -48,6 +50,7 @@ public class WeaponGunScript : MonoBehaviour {
     public Camera fpsCam;// used to shoot a Raycast from the camera
     public Image bar;
 
+
     private Animator _animator;
 
     public GameObject isDead_Panel;
@@ -64,35 +67,42 @@ public class WeaponGunScript : MonoBehaviour {
         currentAmmo = maxAmmo;
         ammoText.text = "Ammo: " + maxAmmo.ToString();
         reloadingText.enabled = false;
+
+
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
-        ammoBar();
-        ammoText.text = "Ammo: " + currentAmmo.ToString();
+        if (!EventSystem.current.IsPointerOverGameObject()) //stop raycast on UI clicks. when UI is activ, gameObjects arent hit with raycast.
+        {
+            ammoBar();
+            ammoText.text = "Ammo: " + currentAmmo.ToString();
 
-        // if is reloading then stop other actions
-        if (isReloading)
-            return;
-        //if ammo is zero or below then stop other actions and reload
-        if (currentAmmo <= 0)
-        {
-            
-            StartCoroutine(Reload());
-            return;
-        }
+            // if is reloading then stop other actions
+            if (isReloading)
+                return;
+            //if ammo is zero or below then stop other actions and reload
+            if (currentAmmo <= 0)
+            {
 
-        if (Input.GetButtonDown("Fire1"))//left mouse
-        {
-            shoot();
-            _animator.Play("WeaponGun_moveBack", -1, 0f);
-        }
-        if (Input.GetMouseButtonDown(2) && (currentAmmo != maxAmmo))//middle mouse
-        {
-            Debug.Log("Pressed middle click.");
-            StartCoroutine(Reload());
+                StartCoroutine(Reload());
+                return;
+            }
+
+            if (Input.GetButtonDown("Fire1"))//left mouse
+            {
+                shoot();
+                _animator.Play("WeaponGun_moveBack", -1, 0f);
+                FindObjectOfType<SFX_Manager>().Play("laserSound");
+
+            }
+            if (Input.GetMouseButtonDown(2) && (currentAmmo != maxAmmo))//middle mouse
+            {
+                Debug.Log("Pressed middle click.");
+                StartCoroutine(Reload());
+            }
         }
     }
 
@@ -102,12 +112,12 @@ public class WeaponGunScript : MonoBehaviour {
         isReloading = true; //set isReloading to true so other actions are stopped
         ammoText.enabled = false;//disable the ammotext so the reloading text can be seen
         reloadingText.enabled = true; // show reloading text
-       
+        FindObjectOfType<SFX_Manager>().Play("reloading");
 
         yield return new WaitForSeconds(reloadTime);
         currentAmmo = maxAmmo;// fill ammo
 
-        
+        FindObjectOfType<SFX_Manager>().Stop("reloading");
         reloadingText.enabled = false;// disable reloading text
         ammoText.enabled = true;// enable the ammotext
         isReloading = false;//set isReloading to false so other actions can be done
@@ -116,63 +126,70 @@ public class WeaponGunScript : MonoBehaviour {
 
     void shoot()
     {
-        currentAmmo -= declineAmmo;
-        int mask = (9 << LayerMask.NameToLayer("enemy")); // hit only this layer(object) with the raycast
-        projectile.Play();
-        RaycastHit hit; //store information about what we hit with out ray
-        if (isDead_Panel.gameObject.activeInHierarchy == true)
-        {
-            mask = ~1 << 9;// if the dead panel is activ dont let the raycast hit the enemy
-        }
+
+            currentAmmo -= declineAmmo;
+            int mask = (9 << LayerMask.NameToLayer("enemy")); // hit only this layer(object) with the raycast
+            projectile.Play();
+            RaycastHit hit; //store information about what we hit with out ray // used for the enemy
+            if (isDead_Panel.gameObject.activeInHierarchy == true)
+            {
+                mask = ~1 << 9;// if the dead panel is activ dont let the raycast hit the enemy..ignoring layer 9
+            }
             //to shoot out a ray
             //fpsCam.transform.position -> shoot out a ray starting at the position of our camera
             //fpsCam.transform.position -> shoot the ray in the direction we are facing
             //out hit -> gather information of what we hit and put it in the RaycastHit hit variable
             //range -> if objects are further away than the range unit, we arent able to hit them
-            if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, range, mask))
-        {
-            //show the name of the object that has been hit in the console
-            // Debug.Log(hit.transform.name);
-
-            // subtract amount from the enemys health
-            EnemyHealthScript enemy = hit.transform.GetComponent<EnemyHealthScript>();
-            if(hit.collider.tag == "enemy")
-            //if(enemy != null)
+            if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, range, mask))// this physics works only the enemy because of the mask
             {
-                enemy.TakeDamage(damage);
+                //show the name of the object that has been hit in the console
+                // Debug.Log(hit.transform.name);
+
+                // subtract amount from the enemys health
+                EnemyHealthScript enemy = hit.transform.GetComponent<EnemyHealthScript>();
+                if (hit.collider.tag == "enemy")
+                //if(enemy != null)
+                {
+                    enemy.TakeDamage(damage);
+                }
+                //if enemy is hit, start the chase
+                EnemyAIScript _enemy = hit.transform.GetComponent<EnemyAIScript>();
+                if (_enemy != null)
+                {
+                    _enemy.CheckSight();
+                }
+
+                //push an object with a rigid body backwards when hit
+                //-hit.normal -> push backwards
+                if (hit.rigidbody != null)//if an object has a rigid body 
+                {
+                    hit.rigidbody.AddForce(-hit.normal * impactForce);
+                }
+                //if an object is hit, show the shockwave
+                //hit.point -> point of impact
+                //Quaternion.LookRotation(hit.normal) -> dont understand
+                GameObject impactGameObject = Instantiate(impactEffect, hit.point, Quaternion.LookRotation(hit.normal)) as GameObject;
+
+                //destroy every instanitaed object after 2 seconds. This is done so that the unity hierarchy  
+                //doesnt get full with instantiated objects and also to make sure memory does not get full
+                Destroy(impactGameObject, 2f);
+
+
+                Shielded_EnemyScript shieldedEnemy = hit.transform.GetComponent<Shielded_EnemyScript>();
+                if (hit.collider.tag == "shielded_enemy")
+                {
+                    shieldedEnemy.shield(); // if this specific enemy is hit, activate his shield
+                    shieldedEnemy.TakeDamageShield(damage);// damage his shield
+                }
             }
-            //if enemy is hit, start the chase
-            EnemyAIScript _enemy = hit.transform.GetComponent<EnemyAIScript>();
-            if (_enemy != null)
+            //if raycast hits other objects like walls, stones, etc show impact effect.  ...impactEffect_Shockwave play On Awake checkbox has to be activ
+            if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, range))
             {
-                _enemy.CheckSight();
+                GameObject impactGameObject = Instantiate(impactEffect, hit.point, Quaternion.LookRotation(hit.normal)) as GameObject;
+                Destroy(impactGameObject, 2f);
             }
-            
-            //push an object with a rigid body backwards when hit
-            //-hit.normal -> push backwards
-            if(hit.rigidbody != null)//if an object has a rigid body 
-            {
-                hit.rigidbody.AddForce(-hit.normal * impactForce);
-            }
-            //if an object is hit, show the shockwave
-            //hit.point -> point of impact
-            //Quaternion.LookRotation(hit.normal) -> dont understand
-            GameObject impactGameObject = Instantiate(impactEffect, hit.point, Quaternion.LookRotation(hit.normal)) as GameObject;
-
-            //destroy every instanitaed object after 2 seconds. This is done so that the unity hierarchy  
-            //doesnt get full with instantiated objects and also to make sure memory does not get full
-            Destroy(impactGameObject, 2f);
-
-
-            Shielded_EnemyScript shieldedEnemy = hit.transform.GetComponent<Shielded_EnemyScript>();
-            if (hit.collider.tag == "shielded_enemy")
-            {        
-                shieldedEnemy.shield(); // if this specific enemy is hit, activate his shield
-                shieldedEnemy.TakeDamageShield(damage);// damage his shield
-            }
-        } 
+        
     }
-
     private void OnPhraseRecognized(PhraseRecognizedEventArgs args)
     {
         if (args.text == m_Keywords[0]) // keyword "shoot" to fire
@@ -197,7 +214,8 @@ public class WeaponGunScript : MonoBehaviour {
 
             shoot();
             _animator.Play("WeaponGun_moveBack", -1, 0f);
-            
+            FindObjectOfType<SFX_Manager>().Play("laserSound");
+
         }
 
         if (args.text == m_Keywords[1]) //keyword "charge" to reload ammo

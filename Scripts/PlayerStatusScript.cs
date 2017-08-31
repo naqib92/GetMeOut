@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEngine.UI;
 using UnityStandardAssets.Characters.FirstPerson;
 
@@ -29,30 +28,22 @@ public class PlayerStatusScript : MonoBehaviour
     public GameObject blackFadeInOUtImage_CheckPoint;
 
 
-    private Animator anim;
+
+
 
     void Start()
-    {
-        anim = GetComponent<Animator>();
+    {     
         healthbar_blur = GetComponent<HealthBar_BlurScript>();
+        bar.fillAmount = 1f;// full health on start
 
-        //Image bar - full bar at start
-        bar.fillAmount = 1f;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
     }
 
-    /**not working properly  
-       //put healthbar off and on when damaged   
-       IEnumerator onOff_Healthbar()
-       {        
-           bar.enabled = false;
-           yield return new WaitForSeconds(0.05f);
-           bar.enabled = true;        
-       }
-     **/
 
     public void GetDamage(float damage)
     {
-        //StartCoroutine(onOff_Healthbar());
         healthbar_blur.ShowBlur();
 
         bar.fillAmount -= damage;// subtract from fillamout bar -> example.        (bar.fillAmount)1f - (damage)0.03 = 0.97
@@ -64,19 +55,20 @@ public class PlayerStatusScript : MonoBehaviour
         // On Death
         if (bar.fillAmount <= 0)
         {
+            FindObjectOfType<SFX_Manager>().Play("gameOver");
             isDead_Panel.gameObject.SetActive(true);// show isDead panel options
             isDeadBackground.gameObject.SetActive(true); // darken the background
             Time.timeScale = 0; //stop every movement around the enviroment
             Player.GetComponent<FirstPersonController>().enabled = false; //stop the player from moving
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true; // show cursor
-            IsPause.escape_buttonsEnabled = false;
+            IsPause.escape_buttonsEnabled = false;//dont allow player to pause
 
 
             if (isRestarting == false)//in case multiple checkpoints are needed
             {
-                Button btn = buttonClickRestartCheckPoint.GetComponent<Button>();
-                btn.onClick.AddListener(OnButtonClick_RestartCheckPoint);
+                //Button btn = buttonClickRestartCheckPoint.GetComponent<Button>();
+                //btn.onClick.AddListener(OnButtonClick_RestartCheckPoint);
                 blackFadeInOUtImage_CheckPoint.SetActive(false);
             }
         }
@@ -98,7 +90,7 @@ public class PlayerStatusScript : MonoBehaviour
 
         if (isDead_Panel.gameObject.activeInHierarchy == true)
         {
-
+            blackFadeInOUtImage_CheckPoint.SetActive(false);
             isDead_Panel.gameObject.SetActive(false);// dont show isDead panel options
             isDeadBackground.gameObject.SetActive(false); //  dont darken the background
             Time.timeScale = 1; //allow every movement around the enviroment
@@ -130,6 +122,8 @@ public class PlayerStatusScript : MonoBehaviour
             other.transform.parent.GetComponent<EnemyAIScript>().CheckSight();
         }
     }
+
+
 
     void Update()
     {

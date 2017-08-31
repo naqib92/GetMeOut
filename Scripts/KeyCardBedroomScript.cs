@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
-
+using UnityEngine.EventSystems;
 public class KeyCardBedroomScript : MonoBehaviour {
 
 
@@ -67,17 +66,22 @@ public class KeyCardBedroomScript : MonoBehaviour {
     // if _isInsideTrigger is true and mouse is pressed destroy key card and display "key card obtained" 
     void InsideTrigger()
     {
-        if (inTrigger)
+        if (!EventSystem.current.IsPointerOverGameObject()) //stop raycast on UI clicks. when UI is activ, gameObjects arent hit with raycast.
         {
-            if (Input.GetMouseButtonDown(1))
+            if (inTrigger)
             {
-                DoorBedroomScript.keyCardBedroom = true;
-                Destroy(GameObject.FindWithTag("Keycard_Bedroom"));
-                openPanel.SetActive(false);// panel is invincible
-                shownMinimizedKeycard.SetActive(true);
+                if (Input.GetMouseButtonDown(1))
+                {
+                    DoorBedroomScript.keyCardBedroom = true;
+                    Destroy(GameObject.FindWithTag("Keycard_Bedroom"));
+                    openPanel.SetActive(false);// panel is invincible
+                    shownMinimizedKeycard.SetActive(true);
+                    Timer.countKeycards -= 1;
+                    FindObjectOfType<SFX_Manager>().Stop("wardrobeOpen");
+                    FindObjectOfType<SFX_Manager>().Play("gotItem");
+                }
             }
         }
-
     }
 
 

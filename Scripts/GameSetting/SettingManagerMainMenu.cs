@@ -12,11 +12,14 @@ public class SettingManagerMainMenu : MonoBehaviour {
     public Dropdown textureQualityDropdownMainMenu;
     public Dropdown antialiasingDropdownMainMenu;
     public Dropdown vSyncDropdownMainMenu;
-    public Slider musicVolumeSliderMainMenu;
+    //public Slider musicVolumeSliderMainMenu;
+    //public Slider sfxVolumeSliderMainMenu;
+    public Slider masterVolumeSliderMainMenu;
     public Button applyButtonMainMenu;
     public Button closeClickMainMenu;
 
-    public AudioSource musicSourceMainMenu;
+    //public MusicManager musicSourceMainMenu;
+    //public SFX_Manager sfxSourceMainMenu;
     public Resolution[] resolutionsMainMenu;
     public GameSettings gameSettings;
 
@@ -25,11 +28,14 @@ public class SettingManagerMainMenu : MonoBehaviour {
 
     private string Scene_MainMenu = "MainMenu";
 
-
+    public static MusicManager instance;
 
 
     void OnEnable()
     {
+        //musicSourceMainMenu = FindObjectOfType<MusicManager>();
+        //sfxSourceMainMenu = FindObjectOfType<SFX_Manager>();
+
         gameSettings = new GameSettings();
 
         fullscreenToggleMainMenu.onValueChanged.AddListener(delegate { OnFullscreenToggleMainMenu(); });
@@ -37,7 +43,9 @@ public class SettingManagerMainMenu : MonoBehaviour {
         textureQualityDropdownMainMenu.onValueChanged.AddListener(delegate { OnTextureQualityChangeMainMenu(); });
         antialiasingDropdownMainMenu.onValueChanged.AddListener(delegate { OnAntialiasingChangeMainMenu(); });
         vSyncDropdownMainMenu.onValueChanged.AddListener(delegate { OnVSyncChangeMainMenu(); });
-        musicVolumeSliderMainMenu.onValueChanged.AddListener(delegate { OnMusicVolumeMainMenu(); });
+        //musicVolumeSliderMainMenu.onValueChanged.AddListener(delegate { OnMusicVolumeMainMenu(); });
+        //sfxVolumeSliderMainMenu.onValueChanged.AddListener(delegate { OnSfxVolumeMainMenu(); });
+        masterVolumeSliderMainMenu.onValueChanged.AddListener(delegate { OnMasterVolumeMainMenu(); });
         applyButtonMainMenu.onClick.AddListener(delegate { OnApplyButtonClickMainMenu(); });
         closeClickMainMenu.onClick.AddListener(delegate { OnCloseClickMainMenu(); });
 
@@ -54,7 +62,6 @@ public class SettingManagerMainMenu : MonoBehaviour {
 
     public void OnFullscreenToggleMainMenu()
     {
-
         gameSettings.fullscreen = Screen.fullScreen = fullscreenToggleMainMenu.isOn;
     }
 
@@ -79,20 +86,33 @@ public class SettingManagerMainMenu : MonoBehaviour {
     {
         QualitySettings.vSyncCount = gameSettings.vSync = vSyncDropdownMainMenu.value;
     }
-
+    /**
     public void OnMusicVolumeMainMenu()
     {
-        musicSourceMainMenu.volume = gameSettings.musicVolume = musicVolumeSliderMainMenu.value;
+        musicSourceMainMenu.GetComponent<AudioSource>().volume = gameSettings.musicVolume = musicVolumeSliderMainMenu.value;
+
+    }
+
+    public void OnSfxVolumeMainMenu()
+    {
+        sfxSourceMainMenu.GetComponent<AudioSource>().volume = gameSettings.sfxVolume = sfxVolumeSliderMainMenu.value;
+    }
+    **/
+    public void OnMasterVolumeMainMenu()
+    {
+        AudioListener.volume = gameSettings.masterVolume = masterVolumeSliderMainMenu.value;
     }
 
     public void OnApplyButtonClickMainMenu()
     {
+        FindObjectOfType<SFX_Manager>().Play("buttonSound");
         SceneManager.LoadScene(Scene_MainMenu);
         SaveSettingsMainMenu();
     }
 
     public void OnCloseClickMainMenu()
     {
+        FindObjectOfType<SFX_Manager>().Play("buttonSound");
         SceneManager.LoadScene(Scene_MainMenu);
     }
 
@@ -107,8 +127,9 @@ public class SettingManagerMainMenu : MonoBehaviour {
     {
         gameSettings = JsonUtility.FromJson<GameSettings>(File.ReadAllText(Application.persistentDataPath + "/gamesetting.json"));
 
-
-        musicVolumeSliderMainMenu.value = gameSettings.musicVolume;
+        masterVolumeSliderMainMenu.value = gameSettings.masterVolume;
+       //musicVolumeSliderMainMenu.value = gameSettings.musicVolume;
+        //sfxVolumeSliderMainMenu.value = gameSettings.sfxVolume;
         antialiasingDropdownMainMenu.value = gameSettings.antialiasing;
         vSyncDropdownMainMenu.value = gameSettings.vSync;
         textureQualityDropdownMainMenu.value = gameSettings.textureQuality;
@@ -118,4 +139,6 @@ public class SettingManagerMainMenu : MonoBehaviour {
 
         resolutionDropdownMainMenu.RefreshShownValue();
     }
+
+
 }

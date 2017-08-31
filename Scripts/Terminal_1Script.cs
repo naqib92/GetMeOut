@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
-
+using UnityEngine.EventSystems;
 public class Terminal_1Script : MonoBehaviour {
 
     public Animator _animator;
@@ -9,12 +8,13 @@ public class Terminal_1Script : MonoBehaviour {
     public Camera fpsCam;
     public GameObject interf;//interface effect
     public GameObject pointerToBridge;
+    public GameObject pointerToTerminal;
 
     public bool inTrigger;
     public string openText = "Insert keycard to activate Terminal";
     public string closeText = "";
     private bool _isOpen = false;
-    public static bool keyCardTerminal1 = true;// if player has a card set to true
+    public static bool keyCardTerminal1 = false;// if player has a card set to true
     private bool interfaceHasAlreadyBeenActivated = false;
 
     // Use this for initialization
@@ -70,20 +70,25 @@ public class Terminal_1Script : MonoBehaviour {
     //if _isInsideTrigger is true, key card is obtainded and mouse is pressed
     void InsideTrigger()
     {
-        if (inTrigger == true)
+        if (!EventSystem.current.IsPointerOverGameObject()) //stop raycast on UI clicks. when UI is activ, gameObjects arent hit with raycast.
         {
-            if (keyCardTerminal1)
+            if (inTrigger == true)
             {
-                if (Input.GetMouseButtonDown(1))
+                if (keyCardTerminal1)
                 {
-                    _animator.SetBool("Terminal1Slot_NoError", true);
-                    _animator.SetBool("Terminal_On", true);
-                    openPanel.SetActive(false);
-                    openPanel = null;
-                    interf.SetActive(true);
-                    interfaceHasAlreadyBeenActivated = true;
-                    BridgeActivationScript.bridgeIsActiv = true;
-                    pointerToBridge.SetActive(true);
+                    if (Input.GetMouseButtonDown(1))
+                    {
+                        FindObjectOfType<SFX_Manager>().Play("openInterface");
+                        _animator.SetBool("Terminal1Slot_NoError", true);
+                        _animator.SetBool("Terminal_On", true);
+                        openPanel.SetActive(false);
+                        openPanel = null;
+                        interf.SetActive(true);
+                        interfaceHasAlreadyBeenActivated = true;
+                        BridgeActivationScript.bridgeIsActiv = true;
+                        pointerToBridge.SetActive(true);
+                        pointerToTerminal.SetActive(false);
+                    }
                 }
             }
         }
@@ -108,6 +113,7 @@ public class Terminal_1Script : MonoBehaviour {
                 if (other.tag == "Player")
                 {          
                         interf.SetActive(false);
+                        FindObjectOfType<SFX_Manager>().Play("closeInterface");
                 }
             }
 
@@ -119,7 +125,8 @@ public class Terminal_1Script : MonoBehaviour {
                 if (other.tag == "Player")
                 {       
                         interf.SetActive(true);
-                 }
+                        FindObjectOfType<SFX_Manager>().Play("openInterface");
+                }
             }
     }
         // Update is called once per frame

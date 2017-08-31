@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
-
+using UnityEngine.EventSystems;
 
 public class Laptop_GameScript : MonoBehaviour {
 
@@ -97,120 +97,137 @@ public class Laptop_GameScript : MonoBehaviour {
     // if player is insideTrigger show panel keyboard
     void InsideTrigger()
     {
-        
-      if (laptop_isInsideTrigger)
+        if (!EventSystem.current.IsPointerOverGameObject()) //stop raycast on UI clicks. when UI is activ, gameObjects arent hit with raycast.
         {
-         
-            if (Input.GetKeyDown(KeyCode.Alpha0) || Input.GetKeyDown(KeyCode.Keypad0))
-            {
-                keypadInput("0");
-                wrongAnswer.SetActive(false);// in case wrong answer is displayed. on click dont show wrong answer
-                enterA_Number.SetActive(false);
-            }
-
-            if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Keypad1))
+            if (laptop_isInsideTrigger)
             {
 
-                keypadInput("1");
-                wrongAnswer.SetActive(false);
-                enterA_Number.SetActive(false);
-            }
-
-            if (Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.Keypad2))
-            {
-                keypadInput("2");
-                wrongAnswer.SetActive(false);
-                enterA_Number.SetActive(false);
-            }
-
-            if (Input.GetKeyDown(KeyCode.Alpha3) || Input.GetKeyDown(KeyCode.Keypad3))
-            {
-                keypadInput("3");
-                wrongAnswer.SetActive(false);
-                enterA_Number.SetActive(false);
-            }
-
-            if (Input.GetKeyDown(KeyCode.Alpha4) || Input.GetKeyDown(KeyCode.Keypad4))
-            {
-                keypadInput("4");
-                wrongAnswer.SetActive(false);
-                enterA_Number.SetActive(false);
-            }
-
-            if (Input.GetKeyDown(KeyCode.Alpha5) || Input.GetKeyDown(KeyCode.Keypad5))
-            {
-                keypadInput("5");
-                wrongAnswer.SetActive(false);
-                enterA_Number.SetActive(false);
-            }
-
-            if (Input.GetKeyDown(KeyCode.Alpha6) || Input.GetKeyDown(KeyCode.Keypad6))
-            {
-                keypadInput("6");
-                wrongAnswer.SetActive(false);
-                enterA_Number.SetActive(false);
-            }
-
-            if (Input.GetKeyDown(KeyCode.Alpha7) || Input.GetKeyDown(KeyCode.Keypad7))
-            {
-                keypadInput("7");
-                wrongAnswer.SetActive(false);
-                enterA_Number.SetActive(false);
-            }
-
-            if (Input.GetKeyDown(KeyCode.Alpha8) || Input.GetKeyDown(KeyCode.Keypad8))
-            {
-                keypadInput("8");
-                wrongAnswer.SetActive(false);
-                enterA_Number.SetActive(false);
-            }
-
-            if (Input.GetKeyDown(KeyCode.Alpha9) || Input.GetKeyDown(KeyCode.Keypad9))
-            {
-                keypadInput("9");
-                wrongAnswer.SetActive(false);
-                enterA_Number.SetActive(false);
-            }
-
-            if (Input.GetKeyDown(KeyCode.Delete) || Input.GetKeyDown(KeyCode.Backspace))
-            {
-                laptop_myNumber.text = "";
-                wrongAnswer.SetActive(false);       
-            }
-            if (Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Return))
-            {
-                if (laptop_myNumber.text == currentAnswer)
+                if (Input.GetKeyDown(KeyCode.Alpha0) || Input.GetKeyDown(KeyCode.Keypad0))
                 {
-                    laptop_OpenPanel.SetActive(false);
-                    laptop_OpenPanel = null;
-                    correct = true;
-                    _animator.SetBool("Laptop_on", false);
-                }
-                else if (laptop_myNumber.text == "")
-                {
-                    enterA_Number.SetActive(true);
+                    keypadInput("0");
+                    wrongAnswer.SetActive(false);// in case wrong answer is displayed. on click dont show wrong answer
+                    enterA_Number.SetActive(false);
+                    FindObjectOfType<SFX_Manager>().Play("clickButtonLaptop");
                 }
 
-                else 
+                if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Keypad1))
                 {
-                    //laptop_myNumber.text = "wrong answer";
-                    wrongAnswer.SetActive(true);
-                    playerStatus.GetDamage(damage);
-                    healthbar_blur.ShowBlur();
+
+                    keypadInput("1");
+                    wrongAnswer.SetActive(false);
+                    enterA_Number.SetActive(false);
+                    FindObjectOfType<SFX_Manager>().Play("clickButtonLaptop");
                 }
+
+                if (Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.Keypad2))
+                {
+                    keypadInput("2");
+                    wrongAnswer.SetActive(false);
+                    enterA_Number.SetActive(false);
+                    FindObjectOfType<SFX_Manager>().Play("clickButtonLaptop");
+                }
+
+                if (Input.GetKeyDown(KeyCode.Alpha3) || Input.GetKeyDown(KeyCode.Keypad3))
+                {
+                    keypadInput("3");
+                    wrongAnswer.SetActive(false);
+                    enterA_Number.SetActive(false);
+                    FindObjectOfType<SFX_Manager>().Play("clickButtonLaptop");
+                }
+
+                if (Input.GetKeyDown(KeyCode.Alpha4) || Input.GetKeyDown(KeyCode.Keypad4))
+                {
+                    keypadInput("4");
+                    wrongAnswer.SetActive(false);
+                    enterA_Number.SetActive(false);
+                    FindObjectOfType<SFX_Manager>().Play("clickButtonLaptop");
+                }
+
+                if (Input.GetKeyDown(KeyCode.Alpha5) || Input.GetKeyDown(KeyCode.Keypad5))
+                {
+                    keypadInput("5");
+                    wrongAnswer.SetActive(false);
+                    enterA_Number.SetActive(false);
+                    FindObjectOfType<SFX_Manager>().Play("clickButtonLaptop");
+                }
+
+                if (Input.GetKeyDown(KeyCode.Alpha6) || Input.GetKeyDown(KeyCode.Keypad6))
+                {
+                    keypadInput("6");
+                    wrongAnswer.SetActive(false);
+                    enterA_Number.SetActive(false);
+                    FindObjectOfType<SFX_Manager>().Play("clickButtonLaptop");
+                }
+
+                if (Input.GetKeyDown(KeyCode.Alpha7) || Input.GetKeyDown(KeyCode.Keypad7))
+                {
+                    keypadInput("7");
+                    wrongAnswer.SetActive(false);
+                    enterA_Number.SetActive(false);
+                    FindObjectOfType<SFX_Manager>().Play("clickButtonLaptop");
+                }
+
+                if (Input.GetKeyDown(KeyCode.Alpha8) || Input.GetKeyDown(KeyCode.Keypad8))
+                {
+                    keypadInput("8");
+                    wrongAnswer.SetActive(false);
+                    enterA_Number.SetActive(false);
+                    FindObjectOfType<SFX_Manager>().Play("clickButtonLaptop");
+                }
+
+                if (Input.GetKeyDown(KeyCode.Alpha9) || Input.GetKeyDown(KeyCode.Keypad9))
+                {
+                    keypadInput("9");
+                    wrongAnswer.SetActive(false);
+                    enterA_Number.SetActive(false);
+                    FindObjectOfType<SFX_Manager>().Play("clickButtonLaptop");
+                }
+
+                if (Input.GetKeyDown(KeyCode.Delete) || Input.GetKeyDown(KeyCode.Backspace))
+                {
+                    laptop_myNumber.text = "";
+                    wrongAnswer.SetActive(false);
+                    FindObjectOfType<SFX_Manager>().Play("clickButtonLaptop");
+                }
+                if (Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Return))
+                {
+                    FindObjectOfType<SFX_Manager>().Play("clickButtonLaptop");
+
+                    if (laptop_myNumber.text == currentAnswer)
+                    {
+                        laptop_OpenPanel.SetActive(false);
+                        laptop_OpenPanel = null;
+                        correct = true;
+                        _animator.SetBool("Laptop_on", false);
+                        FindObjectOfType<SFX_Manager>().Play("correctAnswer");
+                    }
+                    else if (laptop_myNumber.text == "")
+                    {
+                        enterA_Number.SetActive(true);
+                        FindObjectOfType<SFX_Manager>().Play("error");
+                    }
+
+                    else
+                    {
+                        //laptop_myNumber.text = "wrong answer";
+                        wrongAnswer.SetActive(true);
+                        playerStatus.GetDamage(damage);
+                        healthbar_blur.ShowBlur();
+                        FindObjectOfType<SFX_Manager>().Play("error");
+                    }
+
+                }
+
+
 
             }
 
 
-
+            if (correct && laptop_isInsideTrigger)
+            {
+                StartCoroutine(ShowSuccess());
+            }
         }
-
-
-        if (correct && laptop_isInsideTrigger)
-        {
-            StartCoroutine(ShowSuccess());
-        }
-
     }
 
     //show the the password panel for some seconds and then deactivate and set the mini password panel to true
@@ -247,7 +264,6 @@ public class Laptop_GameScript : MonoBehaviour {
         {
             laptop_myNumber.text = "";
             wrongAnswer.SetActive(false);
-            
         }
 
     }

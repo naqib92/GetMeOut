@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
-
+using UnityEngine.EventSystems;
 public class KeyCardKitchen_To_Weapon : MonoBehaviour {
 
     
@@ -62,22 +61,27 @@ public class KeyCardKitchen_To_Weapon : MonoBehaviour {
     //if _isInsideTrigger is true and mouse is pressed destroy key card and display "key card obtained" 
     void InsideTrigger()
     {
-        if (inTrigger)
+        if (!EventSystem.current.IsPointerOverGameObject()) //stop raycast on UI clicks. when UI is activ, gameObjects arent hit with raycast.
         {
-            if (Input.GetMouseButtonDown(1))
+            if (inTrigger)
             {
-                //DoorBedroomScript.keyCardBedroom = true;
-                Laptop_GameScript_3.keyCard_To_Laptop = true;// set to true so player can play the third game
-                WeaponSafe_CorridorScript.keyCard_To_Laptop = true; // set to true so the weapon safe shows "go do activation to open" 
+                if (Input.GetMouseButtonDown(1))
+                {
+                    //DoorBedroomScript.keyCardBedroom = true;
+                    Laptop_GameScript_3.keyCard_To_Laptop = true;// set to true so player can play the third game
+                    WeaponSafe_CorridorScript.keyCard_To_Laptop = true; // set to true so the weapon safe shows "go do activation to open" 
 
-                Laptop_GameScript_2.putOffPanel_Game2 = true;// in case second game wasnt played then dont show the panel
-                Laptop_GameScript.putOffPanel_Game1 = true;// in case first game wasnt played then dont show the panel
-                Destroy(this.gameObject);
-                openPanel.SetActive(false);// panel is invincible
-                shownMinimizedKeycard004.SetActive(true);
+                    Laptop_GameScript_2.putOffPanel_Game2 = true;// in case second game wasnt played then dont show the panel
+                    Laptop_GameScript.putOffPanel_Game1 = true;// in case first game wasnt played then dont show the panel
+                    Destroy(this.gameObject);
+                    openPanel.SetActive(false);// panel is invincible
+                    shownMinimizedKeycard004.SetActive(true);
+
+                    Timer.countKeycards -= 1;
+                    FindObjectOfType<SFX_Manager>().Play("gotItem");
+                }
             }
         }
-
     }
     // Update is called once per frame
     void Update () {

@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
-
+using UnityEngine.EventSystems;
 public class KeyCardLivingroomScript : MonoBehaviour
 {
 
@@ -59,18 +58,23 @@ public class KeyCardLivingroomScript : MonoBehaviour
     //if _isInsideTrigger is true and mouse is pressed destroy key card and display "key card obtained" 
     void InsideTrigger()
     {
-        // when panel is visible show text 
-        if (inTrigger)
+        if (!EventSystem.current.IsPointerOverGameObject()) //stop raycast on UI clicks. when UI is activ, gameObjects arent hit with raycast.
         {
-            if (Input.GetMouseButtonDown(1))
+            // when panel is visible show text 
+            if (inTrigger)
             {
-                DoorBathroomScript.keyCard_To_Bathroom = true;
-                keycard.SetActive(false);
-                openPanel.SetActive(false);
-                shownMinimizedKeycard.SetActive(true);
+                if (Input.GetMouseButtonDown(1))
+                {
+                    DoorBathroomScript.keyCard_To_Bathroom = true;
+                    keycard.SetActive(false);
+                    openPanel.SetActive(false);
+                    shownMinimizedKeycard.SetActive(true);
+                    Timer.countKeycards -= 1;
+
+                    FindObjectOfType<SFX_Manager>().Play("gotItem");
+                }
             }
         }
-
     }
     void Update()
     {
